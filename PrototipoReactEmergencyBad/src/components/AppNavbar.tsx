@@ -29,7 +29,7 @@ const AppNavbar = () => {
   const ajusteLinks = [
     { name: "Hospital", path: "/settings/hospital", icon: <Hospital className="mr-2 h-4 w-4" /> },
     { name: "Status Entidade", path: "/settings/status", icon: <User className="mr-2 h-4 w-4" /> },
-    { name: "Atendimentos UTI", path: "/settings/uti", icon: <Hospital className="mr-2 h-4 w-4" /> },
+    { name: "Quartos", path: "/settings/RoomManagement", icon: <Hospital className="mr-2 h-4 w-4" /> },
     { name: "Leitos", path: "/beds", icon: <Hospital className="mr-2 h-4 w-4" /> }
   ];
 

@@ -1,5 +1,5 @@
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
@@ -38,17 +38,16 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Plus, Pencil, Trash } from "lucide-react";
+import { getFromLocalStorage, saveToLocalStorage } from "@/utils/localStorage";
+import { Patient } from "@/data/mockData";
 
 // Definir o schema do formulário com base no modelo UML
 const atendimentoFormSchema = z.object({
   paciente: z.string().min(2, {
     message: "Nome do paciente é obrigatório",
   }),
-  andar: z.string().min(1, {
-    message: "Andar é obrigatório",
-  }),
-  sala: z.string().min(1, {
-    message: "Sala é obrigatória",
+  leito: z.string().min(1, {
+    message: "Leito é obrigatório",
   }),
   tipo: z.string().min(1, {
     message: "Tipo é obrigatório",
@@ -56,64 +55,162 @@ const atendimentoFormSchema = z.object({
   status: z.string().min(1, {
     message: "Status é obrigatório",
   }),
+  diasEstadia: z.coerce.number().min(1, {
+    message: "Dias de estadia deve ser pelo menos 1",
+  }),
+  dataEntrada: z.string().min(1, {
+    message: "Data de entrada é obrigatória",
+  }),
+  horaEntrada: z.string().min(1, {
+    message: "Hora de entrada é obrigatória",
+  }),
 });
 
 type AtendimentoFormValues = z.infer<typeof atendimentoFormSchema>;
-type Atendimento = AtendimentoFormValues & { id: number; data: string };
+type Atendimento = AtendimentoFormValues & { id: number; dataCompleta: string };
+
+// Chaves para armazenamento no localStorage
+const ATENDIMENTOS_STORAGE_KEY = "hospital_atendimentos";
+const BEDS_STORAGE_KEY = "emergencybed_beds";
+
+interface PatientOption {
+  id: string;
+  name: string;
+}
+
+interface BedOption {
+  id: string;
+  room: string;
+  status: string;
+}
 
 const AtendimentosUTI = () => {
   const [atendimentos, setAtendimentos] = useState<Atendimento[]>([
     { 
       id: 1, 
       paciente: "João Silva", 
-      andar: "3", 
-      sala: "305", 
+      leito: "L001", 
       tipo: "Emergência", 
       status: "Crítico",
-      data: "2023-05-01T14:30:00"
+      diasEstadia: 5,
+      dataEntrada: "2023-05-01",
+      horaEntrada: "14:30",
+      dataCompleta: "2023-05-01T14:30:00"
     },
     { 
       id: 2, 
       paciente: "Maria Oliveira", 
-      andar: "3", 
-      sala: "307", 
+      leito: "L003", 
       tipo: "Observação", 
       status: "Estável",
-      data: "2023-05-02T09:15:00"
+      diasEstadia: 3,
+      dataEntrada: "2023-05-02",
+      horaEntrada: "09:15",
+      dataCompleta: "2023-05-02T09:15:00"
     },
     { 
       id: 3, 
       paciente: "Pedro Santos", 
-      andar: "4", 
-      sala: "410", 
+      leito: "L007", 
       tipo: "Cirurgia", 
       status: "Em Observação",
-      data: "2023-05-02T16:45:00"
+      diasEstadia: 7,
+      dataEntrada: "2023-05-02",
+      horaEntrada: "16:45",
+      dataCompleta: "2023-05-02T16:45:00"
     },
   ]);
   
   const [isOpen, setIsOpen] = useState(false);
   const [selectedAtendimento, setSelectedAtendimento] = useState<Atendimento | null>(null);
+  const [patientOptions, setPatientOptions] = useState<PatientOption[]>([]);
+  const [bedOptions, setBedOptions] = useState<BedOption[]>([]);
+  const [occupiedBeds, setOccupiedBeds] = useState<string[]>([]);
   
   const form = useForm<AtendimentoFormValues>({
     resolver: zodResolver(atendimentoFormSchema),
     defaultValues: {
       paciente: "",
-      andar: "",
-      sala: "",
+      leito: "",
       tipo: "",
       status: "",
+      diasEstadia: 1,
+      dataEntrada: new Date().toISOString().split('T')[0],
+      horaEntrada: new Date().toTimeString().slice(0, 5)
     },
   });
 
+  // Carregar dados armazenados
+  useEffect(() => {
+    // Carregar atendimentos
+    const storedAtendimentos = getFromLocalStorage<Atendimento[]>(ATENDIMENTOS_STORAGE_KEY, []);
+    if (storedAtendimentos.length > 0) {
+      setAtendimentos(storedAtendimentos);
+      
+      // Extrair leitos ocupados
+      const ocupados = storedAtendimentos.map(atendimento => atendimento.leito);
+      setOccupiedBeds(ocupados);
+    }
+
+    // Carregar pacientes (mock data para demonstração)
+    const mockPatients = [
+      { id: "P001", name: "João Silva" },
+      { id: "P002", name: "Maria Oliveira" },
+      { id: "P003", name: "Pedro Santos" },
+      { id: "P004", name: "Ana Costa" },
+      { id: "P005", name: "Carlos Ferreira" }
+    ];
+    setPatientOptions(mockPatients);
+    
+    // Carregar leitos
+    const storedBeds = getFromLocalStorage<any[]>(BEDS_STORAGE_KEY, []);
+    if (storedBeds.length > 0) {
+      const formattedBeds = storedBeds.map(bed => ({
+        id: bed.id,
+        room: bed.room || "Sem quarto",
+        status: bed.status
+      }));
+      setBedOptions(formattedBeds);
+    } else {
+      // Leitos mockados se não houver dados
+      setBedOptions([
+        { id: "L001", room: "Q101", status: "Disponível" },
+        { id: "L002", room: "Q101", status: "Disponível" },
+        { id: "L003", room: "Q101", status: "Disponível" },
+        { id: "L004", room: "Q101", status: "Disponível" },
+        { id: "L005", room: "Q201", status: "Disponível" },
+        { id: "L006", room: "Q201", status: "Disponível" },
+        { id: "L007", room: "Q301", status: "Disponível" }
+      ]);
+    }
+  }, []);
+
+  // Salvar atendimentos quando atualizados
+  useEffect(() => {
+    if (atendimentos.length > 0) {
+      saveToLocalStorage(ATENDIMENTOS_STORAGE_KEY, atendimentos);
+      
+      // Atualizar leitos ocupados
+      const ocupados = atendimentos.map(atendimento => atendimento.leito);
+      setOccupiedBeds(ocupados);
+    }
+  }, [atendimentos]);
+
   function handleEditAtendimento(atendimento: Atendimento) {
     setSelectedAtendimento(atendimento);
+    
+    // Extrair data e hora
+    const dataEntrada = atendimento.dataEntrada || atendimento.dataCompleta.split('T')[0];
+    const horaEntrada = atendimento.horaEntrada || atendimento.dataCompleta.split('T')[1].substring(0, 5);
+    
     form.reset({
       paciente: atendimento.paciente,
-      andar: atendimento.andar,
-      sala: atendimento.sala,
+      leito: atendimento.leito,
       tipo: atendimento.tipo,
       status: atendimento.status,
+      diasEstadia: atendimento.diasEstadia,
+      dataEntrada,
+      horaEntrada
     });
     setIsOpen(true);
   }
@@ -122,10 +219,12 @@ const AtendimentosUTI = () => {
     setSelectedAtendimento(null);
     form.reset({
       paciente: "",
-      andar: "",
-      sala: "",
+      leito: "",
       tipo: "",
       status: "",
+      diasEstadia: 1,
+      dataEntrada: new Date().toISOString().split('T')[0],
+      horaEntrada: new Date().toTimeString().slice(0, 5)
     });
     setIsOpen(true);
   }
@@ -139,11 +238,27 @@ const AtendimentosUTI = () => {
   }
 
   function onSubmit(values: AtendimentoFormValues) {
+    // Verificar se o leito já está ocupado (exceto se for edição do mesmo atendimento)
+    const leitoJaOcupado = occupiedBeds.includes(values.leito) && 
+      (!selectedAtendimento || selectedAtendimento.leito !== values.leito);
+    
+    if (leitoJaOcupado) {
+      toast({
+        title: "Leito ocupado",
+        description: "Este leito já está ocupado por outro paciente.",
+        variant: "destructive"
+      });
+      return;
+    }
+
+    // Combinar data e hora para formar dataCompleta
+    const dataCompleta = `${values.dataEntrada}T${values.horaEntrada}:00`;
+
     if (selectedAtendimento) {
       // Editar atendimento existente
       setAtendimentos(atendimentos.map(atendimento => 
         atendimento.id === selectedAtendimento.id 
-          ? { ...atendimento, ...values } 
+          ? { ...atendimento, ...values, dataCompleta } 
           : atendimento
       ));
       toast({
@@ -153,8 +268,7 @@ const AtendimentosUTI = () => {
     } else {
       // Adicionar novo atendimento
       const newId = Math.max(0, ...atendimentos.map(a => a.id)) + 1;
-      const now = new Date().toISOString();
-      setAtendimentos([...atendimentos, { id: newId, ...values, data: now }]);
+      setAtendimentos([...atendimentos, { id: newId, ...values, dataCompleta }]);
       toast({
         title: "Atendimento adicionado",
         description: "O novo atendimento foi adicionado com sucesso.",
@@ -175,6 +289,19 @@ const AtendimentosUTI = () => {
     }).format(date);
   }
 
+  // Filtra leitos disponíveis (não ocupados por outros atendimentos)
+  const getAvailableBeds = () => {
+    if (!selectedAtendimento) {
+      // Para novo atendimento, mostrar apenas leitos não ocupados
+      return bedOptions.filter(bed => !occupiedBeds.includes(bed.id));
+    } else {
+      // Para edição, mostrar o leito atual e leitos não ocupados
+      return bedOptions.filter(bed => 
+        !occupiedBeds.includes(bed.id) || bed.id === selectedAtendimento.leito
+      );
+    }
+  };
+
   return (
     <div className="container mx-auto p-4">
       <div className="flex justify-between items-center mb-6">
@@ -194,10 +321,11 @@ const AtendimentosUTI = () => {
             <TableHeader>
               <TableRow>
                 <TableHead>Paciente</TableHead>
-                <TableHead>Andar/Sala</TableHead>
+                <TableHead>Leito</TableHead>
                 <TableHead>Tipo</TableHead>
                 <TableHead>Status</TableHead>
-                <TableHead>Data</TableHead>
+                <TableHead>Estadia</TableHead>
+                <TableHead>Entrada</TableHead>
                 <TableHead className="text-right">Ações</TableHead>
               </TableRow>
             </TableHeader>
@@ -205,7 +333,7 @@ const AtendimentosUTI = () => {
               {atendimentos.map(atendimento => (
                 <TableRow key={atendimento.id}>
                   <TableCell>{atendimento.paciente}</TableCell>
-                  <TableCell>{atendimento.andar} / {atendimento.sala}</TableCell>
+                  <TableCell>{atendimento.leito}</TableCell>
                   <TableCell>{atendimento.tipo}</TableCell>
                   <TableCell>
                     <span className={`px-2 py-1 rounded-full text-xs font-medium ${
@@ -216,7 +344,8 @@ const AtendimentosUTI = () => {
                       {atendimento.status}
                     </span>
                   </TableCell>
-                  <TableCell>{formatDate(atendimento.data)}</TableCell>
+                  <TableCell>{atendimento.diasEstadia} dias</TableCell>
+                  <TableCell>{formatDate(atendimento.dataCompleta)}</TableCell>
                   <TableCell className="text-right">
                     <Button variant="ghost" size="icon" onClick={() => handleEditAtendimento(atendimento)}>
                       <Pencil className="h-4 w-4" />
@@ -227,6 +356,13 @@ const AtendimentosUTI = () => {
                   </TableCell>
                 </TableRow>
               ))}
+              {atendimentos.length === 0 && (
+                <TableRow>
+                  <TableCell colSpan={7} className="text-center py-4 text-gray-500">
+                    Nenhum atendimento cadastrado
+                  </TableCell>
+                </TableRow>
+              )}
             </TableBody>
           </Table>
         </CardContent>
@@ -248,9 +384,49 @@ const AtendimentosUTI = () => {
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel>Paciente</FormLabel>
-                    <FormControl>
-                      <Input {...field} />
-                    </FormControl>
+                    <Select
+                      onValueChange={field.onChange}
+                      defaultValue={field.value}
+                    >
+                      <FormControl>
+                        <SelectTrigger>
+                          <SelectValue placeholder="Selecione o paciente" />
+                        </SelectTrigger>
+                      </FormControl>
+                      <SelectContent>
+                        {patientOptions.map(patient => (
+                          <SelectItem key={patient.id} value={patient.name}>{patient.name}</SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              
+              <FormField
+                control={form.control}
+                name="leito"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Leito</FormLabel>
+                    <Select
+                      onValueChange={field.onChange}
+                      defaultValue={field.value}
+                    >
+                      <FormControl>
+                        <SelectTrigger>
+                          <SelectValue placeholder="Selecione o leito" />
+                        </SelectTrigger>
+                      </FormControl>
+                      <SelectContent>
+                        {getAvailableBeds().map(bed => (
+                          <SelectItem key={bed.id} value={bed.id}>
+                            {bed.id} (Quarto: {bed.room})
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
                     <FormMessage />
                   </FormItem>
                 )}
@@ -259,12 +435,12 @@ const AtendimentosUTI = () => {
               <div className="grid grid-cols-2 gap-4">
                 <FormField
                   control={form.control}
-                  name="andar"
+                  name="dataEntrada"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>Andar</FormLabel>
+                      <FormLabel>Data de Entrada</FormLabel>
                       <FormControl>
-                        <Input {...field} />
+                        <Input type="date" {...field} />
                       </FormControl>
                       <FormMessage />
                     </FormItem>
@@ -273,18 +449,32 @@ const AtendimentosUTI = () => {
                 
                 <FormField
                   control={form.control}
-                  name="sala"
+                  name="horaEntrada"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>Sala</FormLabel>
+                      <FormLabel>Hora de Entrada</FormLabel>
                       <FormControl>
-                        <Input {...field} />
+                        <Input type="time" {...field} />
                       </FormControl>
                       <FormMessage />
                     </FormItem>
                   )}
                 />
               </div>
+              
+              <FormField
+                control={form.control}
+                name="diasEstadia"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Dias de Estadia</FormLabel>
+                    <FormControl>
+                      <Input type="number" min="1" {...field} />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
               
               <FormField
                 control={form.control}

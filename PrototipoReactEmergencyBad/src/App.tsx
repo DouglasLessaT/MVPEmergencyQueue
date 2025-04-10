@@ -1,4 +1,3 @@
-
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
@@ -13,8 +12,9 @@ import Beds from "./pages/settings/Beds";
 import Transfers from "./pages/Transfers";
 import Hospital from "./pages/settings/Hospital";
 import StatusEntidade from "./pages/settings/StatusEntidade";
-import AtendimentosUTI from "./pages/settings/AtendimentosUTI";
+import AtendimentosUTI from "./pages/AtendimentosUTI";
 import BedManagement from "./pages/settings/BedManagement";
+import RoomManagement from "./pages/settings/RoomManagement";
 import AppNavbar from "./components/AppNavbar";
 import Learning from "./pages/Learning";
 
@@ -38,6 +38,7 @@ const App = () => (
           <Route path="/settings/status" element={<StatusEntidade />} />
           <Route path="/settings/uti" element={<AtendimentosUTI />} />
           <Route path="/settings/bed-management" element={<BedManagement />} />
+          <Route path="/settings/room-management" element={<RoomManagement />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
       </BrowserRouter>
