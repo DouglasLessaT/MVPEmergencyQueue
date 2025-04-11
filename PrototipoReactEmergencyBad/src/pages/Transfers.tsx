@@ -25,6 +25,7 @@ const Transfers = () => {
     setSelectedTransfer(transfer);
     setIsDialogOpen(true);
   };
+  
 
   const handleApproveTransfer = () => {
     toast({
