@@ -1,5 +1,5 @@
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
@@ -15,6 +15,7 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
+import { getFromLocalStorage, saveToLocalStorage } from "@/utils/localStorage";
 
 // Definir o schema do formulário com base no modelo UML
 const hospitalFormSchema = z.object({
@@ -31,9 +32,24 @@ const hospitalFormSchema = z.object({
   capacidadeAtiva: z.coerce.number().positive({
     message: "Capacidade ativa deve ser um número positivo",
   }),
+  numeroLeitos: z.coerce.number().positive({
+    message: "Número de leitos deve ser um número positivo",
+  }),
+  numeroPredios: z.coerce.number().positive({
+    message: "Número de prédios deve ser um número positivo",
+  }),
+  numeroAndares: z.coerce.number().positive({
+    message: "Número de andares deve ser um número positivo",
+  }),
+  numeroQuartos: z.coerce.number().positive({
+    message: "Número de quartos deve ser um número positivo",
+  }),
 });
 
 type HospitalFormValues = z.infer<typeof hospitalFormSchema>;
+
+// Chave para armazenamento no localStorage
+const HOSPITAL_STORAGE_KEY = "hospital_config";
 
 const Hospital = () => {
   const [isEditing, setIsEditing] = useState(false);
@@ -45,16 +61,22 @@ const Hospital = () => {
     escalonamento: "Nível 1",
     capacidadeTotal: 300,
     capacidadeAtiva: 250,
+    numeroLeitos: 120,
+    numeroPredios: 3,
+    numeroAndares: 8,
+    numeroQuartos: 150,
   };
 
   const form = useForm<HospitalFormValues>({
     resolver: zodResolver(hospitalFormSchema),
-    defaultValues,
+    defaultValues: getFromLocalStorage(HOSPITAL_STORAGE_KEY, defaultValues),
   });
 
   function onSubmit(values: HospitalFormValues) {
-    // Aqui você implementaria a lógica para salvar os dados
-    console.log(values);
+    // Salvando os dados no localStorage
+    saveToLocalStorage(HOSPITAL_STORAGE_KEY, values);
+    
+    // Notificando o usuário
     toast({
       title: "Dados do hospital atualizados",
       description: "As informações do hospital foram atualizadas com sucesso.",
@@ -121,7 +143,7 @@ const Hospital = () => {
                   name="capacidadeTotal"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>Capacidade Total</FormLabel>
+                      <FormLabel>Capacidade Total de Pacientes</FormLabel>
                       <FormControl>
                         <Input 
                           type="number" 
@@ -140,6 +162,82 @@ const Hospital = () => {
                   render={({ field }) => (
                     <FormItem>
                       <FormLabel>Capacidade Ativa</FormLabel>
+                      <FormControl>
+                        <Input 
+                          type="number" 
+                          {...field} 
+                          disabled={!isEditing}
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+              </div>
+              
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <FormField
+                  control={form.control}
+                  name="numeroLeitos"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Número de Leitos</FormLabel>
+                      <FormControl>
+                        <Input 
+                          type="number" 
+                          {...field} 
+                          disabled={!isEditing}
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                
+                <FormField
+                  control={form.control}
+                  name="numeroQuartos"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Número de Quartos</FormLabel>
+                      <FormControl>
+                        <Input 
+                          type="number" 
+                          {...field} 
+                          disabled={!isEditing}
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+              </div>
+              
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <FormField
+                  control={form.control}
+                  name="numeroPredios"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Número de Prédios</FormLabel>
+                      <FormControl>
+                        <Input 
+                          type="number" 
+                          {...field} 
+                          disabled={!isEditing}
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                
+                <FormField
+                  control={form.control}
+                  name="numeroAndares"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Número de Andares</FormLabel>
                       <FormControl>
                         <Input 
                           type="number" 

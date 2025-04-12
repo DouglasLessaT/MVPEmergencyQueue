@@ -13,7 +13,6 @@ import Transfers from "./pages/Transfers";
 import Hospital from "./pages/settings/Hospital";
 import StatusEntidade from "./pages/settings/StatusEntidade";
 import AtendimentosUTI from "./pages/AtendimentosUTI";
-import BedManagement from "./pages/settings/BedManagement";
 import RoomManagement from "./pages/settings/RoomManagement";
 import AppNavbar from "./components/AppNavbar";
 import Learning from "./pages/Learning";
@@ -37,8 +36,7 @@ const App = () => (
           <Route path="/settings/hospital" element={<Hospital />} />
           <Route path="/settings/status" element={<StatusEntidade />} />
           <Route path="/settings/uti" element={<AtendimentosUTI />} />
-          <Route path="/settings/bed-management" element={<BedManagement />} />
-          <Route path="/settings/room-management" element={<RoomManagement />} />
+          <Route path="/settings/RoomManagement" element={<RoomManagement/>} />
           <Route path="*" element={<NotFound />} />
         </Routes>
       </BrowserRouter>

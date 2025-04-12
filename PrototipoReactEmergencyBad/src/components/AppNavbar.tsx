@@ -22,7 +22,7 @@ const AppNavbar = () => {
   const links = [
     { name: "Dashboard", path: "/dashboard", icon: <Hospital className="mr-2 h-4 w-4" /> },
     { name: "Pacientes", path: "/patients", icon: <User className="mr-2 h-4 w-4" /> },
-    { name: "Atendimentos UTI", path: "/settings/uti", icon: <Hospital className="mr-2 h-4 w-4" /> },
+    { name: "Atendimentos Emergency", path: "/settings/uti", icon: <Hospital className="mr-2 h-4 w-4" /> },
     { name: "Transferências", path: "/transfers", icon: <ArrowRight className="mr-2 h-4 w-4" /> }
   ];
 

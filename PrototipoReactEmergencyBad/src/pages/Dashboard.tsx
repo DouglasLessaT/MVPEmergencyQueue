@@ -3,9 +3,11 @@ import { useEffect, useState } from "react";
 import DashboardCard from "@/components/DashboardCard";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Plus, User, Hospital, ArrowRight } from "lucide-react";
+import { Plus, User, Hospital, ArrowRight, FileText } from "lucide-react";
 import { mockBeds, mockPatients, mockTransfers } from "@/data/mockData";
 import TransferCard from "@/components/TransferCard";
+import TransferForm from "@/components/TransferForm";
+import AttendanceForm from "@/components/AttendanceForm";
 import { 
   BarChart, 
   Bar, 
@@ -17,7 +19,11 @@ import {
   PieChart, 
   Pie, 
   Cell, 
-  Legend 
+  Legend,
+  LineChart,
+  Line,
+  AreaChart,
+  Area
 } from "recharts";
 
 const Dashboard = () => {
@@ -25,6 +31,8 @@ const Dashboard = () => {
   const [occupiedBedsCount, setOccupiedBedsCount] = useState(0);
   const [availableBedsCount, setAvailableBedsCount] = useState(0);
   const [pendingTransfersCount, setPendingTransfersCount] = useState(0);
+  const [isTransferFormOpen, setIsTransferFormOpen] = useState(false);
+  const [isAttendanceFormOpen, setIsAttendanceFormOpen] = useState(false);
 
   useEffect(() => {
     // Count critical patients
@@ -48,6 +56,8 @@ const Dashboard = () => {
   const bedOccupancyData = [
     { name: "1º Andar", ocupados: 3, disponíveis: 3, manutenção: 1 },
     { name: "2º Andar", ocupados: 3, disponíveis: 5, manutenção: 1 },
+    { name: "3º Andar", ocupados: 5, disponíveis: 2, manutenção: 0 },
+    { name: "4º Andar", ocupados: 2, disponíveis: 6, manutenção: 2 },
   ];
 
   // Data for patient status pie chart
@@ -57,17 +67,63 @@ const Dashboard = () => {
     { name: "Saudável", value: mockPatients.filter(p => p.status === "Healthy").length, color: "#34C759" },
   ];
 
+  // Monthly patient data for trend analysis
+  const monthlyPatientData = [
+    { month: 'Jan', pacientes: 65, altas: 40, transferencias: 15 },
+    { month: 'Fev', pacientes: 59, altas: 35, transferencias: 12 },
+    { month: 'Mar', pacientes: 80, altas: 52, transferencias: 20 },
+    { month: 'Abr', pacientes: 81, altas: 55, transferencias: 21 },
+    { month: 'Mai', pacientes: 56, altas: 36, transferencias: 14 },
+    { month: 'Jun', pacientes: 55, altas: 45, transferencias: 10 },
+  ];
+
+  // Hospital capacity utilization data
+  const capacityData = [
+    { name: 'Hospital A', utilização: 78 },
+    { name: 'Hospital B', utilização: 65 },
+    { name: 'Hospital C', utilização: 83 },
+    { name: 'Hospital D', utilização: 45 },
+  ];
+
   // Pending transfers
   const pendingTransfers = mockTransfers.filter(t => t.status === "Pending");
+
+  const openTransferForm = () => {
+    setIsTransferFormOpen(true);
+  };
+
+  const closeTransferForm = () => {
+    setIsTransferFormOpen(false);
+  };
+
+  const openAttendanceForm = () => {
+    setIsAttendanceFormOpen(true);
+  };
+
+  const closeAttendanceForm = () => {
+    setIsAttendanceFormOpen(false);
+  };
 
   return (
     <div className="container mx-auto px-4 py-6 space-y-6">
       <div className="flex flex-col md:flex-row md:items-center justify-between">
         <h1 className="text-2xl font-bold">Dashboard</h1>
-        <Button className="mt-4 md:mt-0 bg-hospital-blue hover:bg-hospital-blue/90">
-          <Plus className="mr-2 h-4 w-4" />
-          Nova Transferência
-        </Button>
+        <div className="flex flex-col sm:flex-row gap-3 mt-4 md:mt-0">
+          <Button 
+            className="bg-hospital-blue hover:bg-hospital-blue/90"
+            onClick={openTransferForm}
+          >
+            <Plus className="mr-2 h-4 w-4" />
+            Nova Transferência
+          </Button>
+          <Button 
+            className="bg-hospital-green hover:bg-hospital-green/90"
+            onClick={openAttendanceForm}
+          >
+            <FileText className="mr-2 h-4 w-4" />
+            Novo Atendimento
+          </Button>
+        </div>
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
@@ -101,8 +157,8 @@ const Dashboard = () => {
         />
       </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-        <Card className="lg:col-span-2">
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        <Card className="">
           <CardHeader>
             <CardTitle className="text-lg">Ocupação por Andar</CardTitle>
           </CardHeader>
@@ -158,6 +214,55 @@ const Dashboard = () => {
         </Card>
       </div>
 
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        <Card>
+          <CardHeader>
+            <CardTitle className="text-lg">Tendência de Pacientes (Mensal)</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <div className="h-80">
+              <ResponsiveContainer width="100%" height="100%">
+                <LineChart
+                  data={monthlyPatientData}
+                  margin={{ top: 20, right: 30, left: 20, bottom: 5 }}
+                >
+                  <CartesianGrid strokeDasharray="3 3" />
+                  <XAxis dataKey="month" />
+                  <YAxis />
+                  <Tooltip />
+                  <Legend />
+                  <Line type="monotone" dataKey="pacientes" stroke="#0077B6" activeDot={{ r: 8 }} />
+                  <Line type="monotone" dataKey="altas" stroke="#34C759" />
+                  <Line type="monotone" dataKey="transferencias" stroke="#FF9500" />
+                </LineChart>
+              </ResponsiveContainer>
+            </div>
+          </CardContent>
+        </Card>
+
+        <Card>
+          <CardHeader>
+            <CardTitle className="text-lg">Utilização de Capacidade por Hospital</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <div className="h-80">
+              <ResponsiveContainer width="100%" height="100%">
+                <AreaChart
+                  data={capacityData}
+                  margin={{ top: 20, right: 30, left: 20, bottom: 5 }}
+                >
+                  <CartesianGrid strokeDasharray="3 3" />
+                  <XAxis dataKey="name" />
+                  <YAxis />
+                  <Tooltip />
+                  <Area type="monotone" dataKey="utilização" fill="#8884d8" stroke="#8884d8" />
+                </AreaChart>
+              </ResponsiveContainer>
+            </div>
+          </CardContent>
+        </Card>
+      </div>
+
       <div>
         <h2 className="text-xl font-semibold mb-4">Transferências Pendentes</h2>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
@@ -175,6 +280,16 @@ const Dashboard = () => {
           )}
         </div>
       </div>
+
+      {/* Forms */}
+      <TransferForm 
+        isOpen={isTransferFormOpen} 
+        onClose={closeTransferForm} 
+      />
+      <AttendanceForm
+        isOpen={isAttendanceFormOpen}
+        onClose={closeAttendanceForm}
+      />
     </div>
   );
 };
