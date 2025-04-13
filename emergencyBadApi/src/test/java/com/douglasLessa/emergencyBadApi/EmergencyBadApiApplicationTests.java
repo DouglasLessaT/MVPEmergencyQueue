@@ -1,10 +1,10 @@
-package com.douglasLessa.emergencyBad;
+package com.douglasLessa.emergencyBadApi;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
-class EmergencyBadApplicationTests {
+class EmergencyBadApiApplicationTests {
 
 	@Test
 	void contextLoads() {
