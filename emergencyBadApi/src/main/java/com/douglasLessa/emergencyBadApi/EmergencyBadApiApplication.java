@@ -1,13 +1,13 @@
-package com.douglasLessa.emergencyBad;
+package com.douglasLessa.emergencyBadApi;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class EmergencyBadApplication {
+public class EmergencyBadApiApplication {
 
 	public static void main(String[] args) {
-		SpringApplication.run(EmergencyBadApplication.class, args);
+		SpringApplication.run(EmergencyBadApiApplication.class, args);
 	}
 
 }

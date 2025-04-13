@@ -9,11 +9,11 @@
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>com.douglasLessa</groupId>
-	<artifactId>emergencyBad</artifactId>
+	<artifactId>emergencyBadApi</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<packaging>war</packaging>
-	<name>emergencyBad</name>
-	<description>BY: douglasLessa</description>
+	<name>emergencyBadApi</name>
+	<description>Api MVC emergencyBadApi</description>
 	<url/>
 	<licenses>
 		<license/>
@@ -29,25 +29,15 @@
 	</scm>
 	<properties>
 		<java.version>17</java.version>
-		<spring-cloud.version>2024.0.1</spring-cloud.version>
-		<tanzu-scg-extensions.version>1.0.0</tanzu-scg-extensions.version>
 	</properties>
 	<dependencies>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-security</artifactId>
+			<artifactId>spring-boot-starter-data-jpa</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-web</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>com.vmware.tanzu.springcloudgateway.extensions</groupId>
-			<artifactId>access-control</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>org.springframework.cloud</groupId>
-			<artifactId>spring-cloud-starter-gateway</artifactId>
 		</dependency>
 
 		<dependency>
@@ -57,10 +47,9 @@
 			<optional>true</optional>
 		</dependency>
 		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-docker-compose</artifactId>
+			<groupId>org.postgresql</groupId>
+			<artifactId>postgresql</artifactId>
 			<scope>runtime</scope>
-			<optional>true</optional>
 		</dependency>
 		<dependency>
 			<groupId>org.projectlombok</groupId>
@@ -77,30 +66,7 @@
 			<artifactId>spring-boot-starter-test</artifactId>
 			<scope>test</scope>
 		</dependency>
-		<dependency>
-			<groupId>org.springframework.security</groupId>
-			<artifactId>spring-security-test</artifactId>
-			<scope>test</scope>
-		</dependency>
 	</dependencies>
-	<dependencyManagement>
-		<dependencies>
-			<dependency>
-				<groupId>org.springframework.cloud</groupId>
-				<artifactId>spring-cloud-dependencies</artifactId>
-				<version>${spring-cloud.version}</version>
-				<type>pom</type>
-				<scope>import</scope>
-			</dependency>
-			<dependency>
-				<groupId>com.vmware.tanzu.springcloudgateway.extensions</groupId>
-				<artifactId>extensions-bom</artifactId>
-				<version>${tanzu-scg-extensions.version}</version>
-				<type>pom</type>
-				<scope>import</scope>
-			</dependency>
-		</dependencies>
-	</dependencyManagement>
 
 	<build>
 		<plugins>
