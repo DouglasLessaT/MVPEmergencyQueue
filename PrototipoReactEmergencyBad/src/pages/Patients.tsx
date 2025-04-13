@@ -96,6 +96,10 @@ const Patients = () => {
               </div>
               <div className="grid grid-cols-2 gap-4">
                 <div className="space-y-2">
+                  <label htmlFor="room" className="text-sm font-medium">Quarto</label>
+                  <Input id="room" defaultValue={selectedPatient?.room} />
+                </div>
+                <div className="space-y-2">
                   <label htmlFor="admission" className="text-sm font-medium">Data de Admissão</label>
                   <Input id="admission" type="date" defaultValue={selectedPatient?.admissionDate} />
                 </div>

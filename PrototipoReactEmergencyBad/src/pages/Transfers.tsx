@@ -5,9 +5,10 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Button } from "@/components/ui/button";
 import { Transfer, mockTransfers, getPatientById, getHospitalById } from "@/data/mockData";
 import TransferCard from "@/components/TransferCard";
+import TransferForm from "@/components/TransferForm";
 import { Plus, Check, X } from "lucide-react";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
-import { useToast } from "@/components/ui/use-toast";
+import { useToast } from "@/hooks/use-toast";
 import StatusBadge from "@/components/StatusBadge";
 
 const Transfers = () => {
@@ -15,6 +16,7 @@ const Transfers = () => {
   const [activeTab, setActiveTab] = useState("pending");
   const [selectedTransfer, setSelectedTransfer] = useState<Transfer | null>(null);
   const [isDialogOpen, setIsDialogOpen] = useState(false);
+  const [isTransferFormOpen, setIsTransferFormOpen] = useState(false);
 
   const pendingTransfers = mockTransfers.filter((t) => t.status === "Pending");
   const inProgressTransfers = mockTransfers.filter((t) => t.status === "In Progress");
@@ -43,11 +45,22 @@ const Transfers = () => {
     setIsDialogOpen(false);
   };
 
+  const openTransferForm = () => {
+    setIsTransferFormOpen(true);
+  };
+
+  const closeTransferForm = () => {
+    setIsTransferFormOpen(false);
+  };
+
   return (
     <div className="container mx-auto px-4 py-6 space-y-6">
       <div className="flex flex-col md:flex-row md:items-center justify-between">
         <h1 className="text-2xl font-bold">Transferências</h1>
-        <Button className="mt-4 md:mt-0 bg-hospital-blue hover:bg-hospital-blue/90">
+        <Button 
+          className="mt-4 md:mt-0 bg-hospital-blue hover:bg-hospital-blue/90"
+          onClick={openTransferForm}
+        >
           <Plus className="mr-2 h-4 w-4" />
           Nova Transferência
         </Button>
@@ -246,6 +259,12 @@ const Transfers = () => {
           )}
         </DialogContent>
       </Dialog>
+
+      {/* Transfer Form */}
+      <TransferForm 
+        isOpen={isTransferFormOpen} 
+        onClose={closeTransferForm} 
+      />
     </div>
   );
 };
