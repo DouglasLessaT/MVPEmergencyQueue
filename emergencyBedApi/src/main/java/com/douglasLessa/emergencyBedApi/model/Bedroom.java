@@ -1,4 +1,7 @@
-package main.java.com.douglasLessa.emergencyBedApi.model;
+package com.douglasLessa.emergencyBedApi.model;
+
+
+
 public class Bedroom {
     
 }

@@ -1,5 +1,5 @@
 package com.douglasLessa.emergencyBedApi.model;
 
-public class MedicalCare {
+public class PatientTransfer {
     
 }

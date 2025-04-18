@@ -13,14 +13,12 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name = "address")
-public class Address {
+@Table(name = "status")
+public class Status {
 
     @Id
     private UUID id = UUID.randomUUID();
-    private String street;
-    private String country;
-    private String postalCode;
-    private String state;
-    private String city;
+    private String nome;
+    private String codigo;
+    private String cor;
 }
