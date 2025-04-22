@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.douglasLessa.emergencyBedApi.model.User;
-import com.douglasLessa.emergencyBedApi.services.UserService;
+import com.douglasLessa.emergencyBedApi.services.security.UserService;
 import com.douglasLessa.emergencyBedApi.util.JWTUtil;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;

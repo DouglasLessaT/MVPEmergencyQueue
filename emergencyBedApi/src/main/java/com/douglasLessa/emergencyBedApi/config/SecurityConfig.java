@@ -12,7 +12,7 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 
 import com.douglasLessa.emergencyBedApi.model.User;
-import com.douglasLessa.emergencyBedApi.services.UserService;
+import com.douglasLessa.emergencyBedApi.services.security.UserService;
 import com.douglasLessa.emergencyBedApi.util.JWTUtil;
 import com.douglasLessa.emergencyBedApi.config.handelrs.LoginInterceptor;
 

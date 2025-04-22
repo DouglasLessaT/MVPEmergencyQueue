@@ -15,7 +15,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.douglasLessa.emergencyBedApi.annotations.ValidaAcesso;
 import com.douglasLessa.emergencyBedApi.model.User;
-import com.douglasLessa.emergencyBedApi.services.UserService;
+import com.douglasLessa.emergencyBedApi.services.security.UserService;
 import com.douglasLessa.emergencyBedApi.util.JWTUtil;
 
 import jakarta.servlet.http.HttpServletRequest;

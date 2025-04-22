@@ -34,4 +34,12 @@ public class Transfer {
     @ManyToOne
     @JoinColumn(name = "status_id")
     private Status status;
+
+    @Embedded
+    @JoinColumn(name = "address_destination_hospital_id")
+    private Address destinationHospitalAddress;
+
+    @ManyToOne
+    @JoinColumn(name = "addressorigin_hospital_id")
+    private Hospital originHospitalAddress;
 }

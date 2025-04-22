@@ -21,7 +21,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.douglasLessa.emergencyBedApi.annotations.ValidaAcesso;
 import com.douglasLessa.emergencyBedApi.controller.DefaultController;
 import com.douglasLessa.emergencyBedApi.model.User;
-import com.douglasLessa.emergencyBedApi.services.UserService;
+import com.douglasLessa.emergencyBedApi.services.security.UserService;
 
 @CrossOrigin
 @RestController

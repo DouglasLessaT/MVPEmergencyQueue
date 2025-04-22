@@ -16,15 +16,14 @@ public class Hospital {
     private String name;
     private String phone;
     private String escalation;
-    private String street;
-    private String country;
-    private String postalCode;
-    private String state;
-    private String city;
+
+    @Embedded
+    @JoinColumn(name = "address_hospital_id")
+    private Address address;
 
     private Integer totalCapacity;
     private Integer activeCapacity;
-    private Integer numberOfBeds;
+    private Integer numberOfBeds; 
     private Integer numberOfRooms;
     private Integer numberOfBuildings;
     private Integer numberOfFloors;
