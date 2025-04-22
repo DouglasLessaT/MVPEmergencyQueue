@@ -18,6 +18,7 @@ public class Status {
 
     @Id
     private UUID id = UUID.randomUUID();
+    
     private String nome;
     private String codigo;
     private String cor;

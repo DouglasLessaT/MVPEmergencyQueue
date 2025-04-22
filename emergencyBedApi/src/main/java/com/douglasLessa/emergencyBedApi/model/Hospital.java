@@ -1,43 +1,37 @@
 package com.douglasLessa.emergencyBedApi.model;
 
-import java.io.ObjectInputFilter.Status;
+import jakarta.persistence.*;
+import lombok.Data;
+import java.util.List;
 import java.util.UUID;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.Table;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-
-
 @Data
-@NoArgsConstructor
-@AllArgsConstructor
 @Entity
-@Table(name = "Hospital")
+@Table(name = "hospitals")
 public class Hospital {
 
     @Id
     private UUID id = UUID.randomUUID();
 
-    private String nome;
-    private String telefone;
-    private String escalonamento;
-    @ManyToOne
-    private Status status;
-
-    private Integer capacidadeTotal;
-    private Integer capacidadeAtiva;
-    private Integer numeroLeitos;
-    private Integer numeroQuartos;
-    private Integer numeroPredios;
-    private Integer numeroAndares;
-
+    private String name;
+    private String phone;
+    private String escalation;
     private String street;
     private String country;
     private String postalCode;
     private String state;
     private String city;
+
+    private Integer totalCapacity;
+    private Integer activeCapacity;
+    private Integer numberOfBeds;
+    private Integer numberOfRooms;
+    private Integer numberOfBuildings;
+    private Integer numberOfFloors;
+
+    @OneToMany(mappedBy = "hospital")
+    private List<Bedroom> rooms;
+
+    @OneToMany(mappedBy = "hospital")
+    private List<Ambulance> ambulances;
 }
