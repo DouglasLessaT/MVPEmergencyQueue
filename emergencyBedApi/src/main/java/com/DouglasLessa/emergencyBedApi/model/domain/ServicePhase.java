@@ -13,12 +13,12 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name = "status")
-public class Status {
+@Table(name = "service_phase")
+public class ServicePhase {
 
     @Id
     private UUID id = UUID.randomUUID();
-    
+
     private String name;
     private String code;
     private String color;

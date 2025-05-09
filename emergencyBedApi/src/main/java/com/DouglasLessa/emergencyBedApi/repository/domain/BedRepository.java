@@ -9,11 +9,13 @@ import com.DouglasLessa.emergencyBedApi.model.domain.Bed;
 
 @Repository
 public interface BedRepository extends JpaRepository<Bed, UUID> {
-    Bed findByNumberAndHospitalId(String number, UUID hospitalId);
+    Bed findByCode(String code);
 
-    Bed findByNumberAndHospitalIdAndIdNot(String number, UUID hospitalId, UUID id);
+    Bed findByCodeAndBedroomId(String code, UUID bedroomId);
 
-    Bed findByNumberAndHospitalIdAndStatusAndIdNot(String number, UUID hospitalId, String status, UUID id);
+    Bed findByCodeAndBedroomIdAndIdNot(String code, UUID bedroomId, UUID id);
 
-    Bed findByNumberAndHospitalIdAndStatus(String number, UUID hospitalId, String status);
+    Bed findByCodeAndBedroomIdAndStatusId(String code, UUID bedroomId, UUID statusId);
+
+    Bed findByCodeAndBedroomIdAndStatusIdAndIdNot(String code, UUID bedroomId, UUID statusId, UUID id);
 }

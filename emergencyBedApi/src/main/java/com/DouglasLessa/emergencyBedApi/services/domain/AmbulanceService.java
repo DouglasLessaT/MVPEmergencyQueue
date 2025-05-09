@@ -26,4 +26,24 @@ public class AmbulanceService {
         Ambulance ambulance = findById(id);
         ambulanceRepository.delete(ambulance);
     }
+    public Ambulance update(UUID id, Ambulance ambulance) {
+        if (ambulance.getId() == null) {
+            throw new RuntimeException("Ambulance ID cannot be null");
+        }
+        if (!ambulance.getId().equals(id)) {
+            throw new RuntimeException("Ambulance ID in the request body does not match the ID in the URL");
+        }
+        if (ambulance.getId() == null) {
+            throw new RuntimeException("Ambulance ID cannot be null");
+        }
+        Ambulance existingAmbulance = findById(id);
+    
+        existingAmbulance.setLicensePlate(ambulance.getLicensePlate());
+        existingAmbulance.setModel(ambulance.getModel());
+        existingAmbulance.setType(ambulance.getType());
+        existingAmbulance.setRenavam(ambulance.getRenavam());
+        existingAmbulance.setHospital(ambulance.getHospital());
+
+        return ambulanceRepository.save(existingAmbulance);
+    }
 }

@@ -19,8 +19,10 @@ public class Address {
     @Id
     private UUID id = UUID.randomUUID();
     private String street;
+    private String number;
+    private String neighborhood;
     private String country;
-    private String postalCode;
+    private String zipCode;
     private String state;
     private String city;
 }

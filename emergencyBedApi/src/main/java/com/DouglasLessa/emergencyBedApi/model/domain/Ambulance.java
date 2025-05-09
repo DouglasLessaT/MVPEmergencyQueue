@@ -20,8 +20,9 @@ public class Ambulance {
     private String licensePlate;
     private String model;
     private String type;
+    private String renavam;
 
     @ManyToOne
-    @JoinColumn(name = "company_id")
-    private Company company;
+    @JoinColumn(name = "hospital_id")
+    private Hospital hospital;
 }

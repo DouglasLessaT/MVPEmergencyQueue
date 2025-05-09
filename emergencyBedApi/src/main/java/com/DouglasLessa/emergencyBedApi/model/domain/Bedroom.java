@@ -1,6 +1,6 @@
 package com.DouglasLessa.emergencyBedApi.model.domain;
 
-import java.util.List;
+import java.util.ArrayList;
 import java.util.UUID;
 
 import jakarta.persistence.Entity;
@@ -32,8 +32,8 @@ public class Bedroom {
     @JoinColumn(name = "hospital_id")
     private Hospital hospital;
 
-    @OneToMany(mappedBy = "beds")
-    private List<Bed> beds;
+    @OneToMany(mappedBy = "bedroom")
+    private ArrayList<Bed> beds;
 
     @ManyToOne
     @JoinColumn(name = "status_id")

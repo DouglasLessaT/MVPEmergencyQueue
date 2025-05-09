@@ -1,10 +1,11 @@
 package com.DouglasLessa.emergencyBedApi.model.domain;
 
-import java.util.List;
+import java.util.ArrayList;
 import java.util.UUID;
 
 import com.DouglasLessa.emergencyBedApi.model.security.User;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Embedded;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
@@ -31,17 +32,17 @@ public class Hospital {
 
     private Integer totalCapacity;
     private Integer activeCapacity;
-    private Integer numberOfBeds; 
+    private Integer numberOfBeds;
     private Integer numberOfRooms;
     private Integer numberOfBuildings;
     private Integer numberOfFloors;
 
     @OneToMany(mappedBy = "hospital")
-    private List<Bedroom> rooms;
+    private ArrayList<Bedroom> rooms;
 
     @OneToMany(mappedBy = "hospital")
-    private List<Ambulance> ambulances;
+    private ArrayList<Ambulance> ambulances;
 
-    @OneToMany(mappedBy = "Users")
-    private List<User> users;
+    @OneToMany(mappedBy = "hospital", cascade = CascadeType.ALL, orphanRemoval = true)
+    private ArrayList<User> users;
 }

@@ -24,4 +24,8 @@ public class MedicalCare {
     @ManyToOne
     @JoinColumn(name = "status_id")
     private Status status;
+
+    @ManyToOne
+    @JoinColumn(name = "service_phase_id")
+    private ServicePhase servicePhase;
 }

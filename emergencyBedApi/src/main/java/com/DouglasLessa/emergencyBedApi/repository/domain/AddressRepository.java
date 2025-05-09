@@ -9,8 +9,7 @@ import com.DouglasLessa.emergencyBedApi.model.domain.Address;
 
 @Repository
 public interface AddressRepository extends JpaRepository<Address, UUID> {
-    Address findByStreetAndNumberAndNeighborhoodAndCityAndStateAndZipCode(String street, String number, String neighborhood, String city, String state, String zipCode);
-
-    Address findByStreetAndNumberAndNeighborhoodAndCityAndStateAndZipCodeAndIdNot(String street, String number, String neighborhood, String city, String state, String zipCode, UUID id);
     Address findByStreetAndNeighborhoodAndCityAndStateAndZipCode(String street, String neighborhood, String city, String state, String zipCode);
+
+    Address findByStreetAndNeighborhoodAndCityAndStateAndZipCodeAndIdNot(String street, String neighborhood, String city, String state, String zipCode, UUID id);
 }
