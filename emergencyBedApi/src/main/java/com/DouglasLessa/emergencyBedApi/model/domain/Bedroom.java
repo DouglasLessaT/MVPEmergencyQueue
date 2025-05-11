@@ -23,10 +23,9 @@ public class Bedroom {
     @Id
     private UUID id = UUID.randomUUID();
 
-    private String codigo;
-    private String andar;
-    private String sala;
-    private String tipo;
+    private String code;
+    private String floor;
+    private String type;
 
     @ManyToOne
     @JoinColumn(name = "hospital_id")

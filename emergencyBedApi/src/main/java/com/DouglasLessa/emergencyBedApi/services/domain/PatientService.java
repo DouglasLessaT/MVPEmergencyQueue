@@ -15,6 +15,7 @@ public class PatientService {
     private PatientRepository patientRepository;
 
     public Patient save(Patient patient) {
+        validatePatient(patient);
         return patientRepository.save(patient);
     }
 
@@ -25,5 +26,35 @@ public class PatientService {
     public void delete(UUID id) {
         Patient patient = findById(id);
         patientRepository.delete(patient);
+    }
+    private void validatePatient(Patient patient) {
+        if (patient.getName() == null || patient.getName().isEmpty()) {
+            throw new IllegalArgumentException("Patient name is required.");
+        }
+        if (patient.getCpf() == null || patient.getCpf().isEmpty()) {
+            throw new IllegalArgumentException("Patient CPF is required.");
+        }
+        if (patient.getRg() == null || patient.getRg().isEmpty()) {
+            throw new IllegalArgumentException("Patient RG is required.");
+        }
+        if (patient.getGender() == null || patient.getGender().isEmpty()) {
+            throw new IllegalArgumentException("Patient gender is required.");
+        }
+    }
+    
+    public void updatePatient(Patient patient) {
+        Patient existingPatient = findById(patient.getId());
+        existingPatient.setName(patient.getName());
+        existingPatient.setGender(patient.getGender());
+        existingPatient.setAge(patient.getAge());
+        existingPatient.setInsurance(patient.getInsurance());
+        existingPatient.setHealthPlan(patient.getHealthPlan());
+        existingPatient.setCpf(patient.getCpf());
+        existingPatient.setRg(patient.getRg());
+        existingPatient.setMotherName(patient.getMotherName());
+        existingPatient.setFatherName(patient.getFatherName());
+        existingPatient.setMedicalRecordPDF(patient.getMedicalRecordPDF());
+
+        patientRepository.save(existingPatient);
     }
 }

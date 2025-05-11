@@ -26,4 +26,13 @@ public class BedroomService {
         Bedroom bedroom = findById(id);
         bedroomRepository.delete(bedroom);
     }
+    public void updateBedroom(Bedroom bedroom) {
+        Bedroom existingBedroom = findById(bedroom.getId());
+        existingBedroom.setCode(bedroom.getCode());
+        existingBedroom.setType(bedroom.getType());
+        existingBedroom.setFloor(bedroom.getFloor());
+        existingBedroom.setBeds(bedroom.getBeds());
+
+        bedroomRepository.save(existingBedroom);
+    }
 }
