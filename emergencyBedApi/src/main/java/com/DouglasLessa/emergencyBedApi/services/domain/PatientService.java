@@ -1,11 +1,13 @@
 package com.DouglasLessa.emergencyBedApi.services.domain;
 
+import java.util.List;
 import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.DouglasLessa.emergencyBedApi.model.domain.Patient;
+import com.DouglasLessa.emergencyBedApi.model.domain.Status;
 import com.DouglasLessa.emergencyBedApi.repository.domain.PatientRepository;
 
 @Service
@@ -40,6 +42,10 @@ public class PatientService {
         if (patient.getGender() == null || patient.getGender().isEmpty()) {
             throw new IllegalArgumentException("Patient gender is required.");
         }
+    }
+
+        public List<Patient> findAll() {
+        return patientRepository.findAll();
     }
     
     public void updatePatient(Patient patient) {

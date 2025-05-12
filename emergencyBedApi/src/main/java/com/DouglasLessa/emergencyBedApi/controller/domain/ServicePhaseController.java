@@ -17,27 +17,28 @@ import com.DouglasLessa.emergencyBedApi.model.domain.ServicePhase;
 import com.DouglasLessa.emergencyBedApi.services.domain.ServicePhaseService;
 
 @RestController
-@RequestMapping
+@RequestMapping("/api/service-phase")
 public class ServicePhaseController {
-    
+
     @Autowired
     private ServicePhaseService servicePhaseService;
 
     @PostMapping
-    public ResponseEntity <ServicePhase> createServicePhase(@RequestBody ServicePhase servicePhase){
+    public ResponseEntity<ServicePhase> createServicePhase(@RequestBody ServicePhase servicePhase) {
         return ResponseEntity.ok(servicePhaseService.save(servicePhase));
     }
 
-        @GetMapping
+    @GetMapping
     public ResponseEntity<List<ServicePhase>> getAllServicePhase() {
-        return ResponseEntity.ok(servicePhaseService.findAll());
+        List<ServicePhase> servicePhases = servicePhaseService.findAll();
+        return ResponseEntity.ok(servicePhases);
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<ServicePhase> getServicePhaseById(@PathVariable UUID id) {
-        return ResponseEntity.ok(servicePhaseService.findById(id));
+        ServicePhase servicePhase = servicePhaseService.findById(id);
+        return ResponseEntity.ok(servicePhase);
     }
-
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteservicePhase(@PathVariable UUID id) {
         servicePhaseService.delete(id);
