@@ -1,23 +1,26 @@
 package models
 
-// Patient represents the transformed patient data that will be sent to the Java API
+import (
+	"time"
+
+	"github.com/google/uuid"
+)
+
+// Patient represents a patient in the system
 type Patient struct {
-	ID            string `json:"id"`
-	Name          string `json:"name"`
-	DateOfBirth   string `json:"dateOfBirth"`
-	Gender        string `json:"gender"`
-	DocumentType  string `json:"documentType"`
-	DocumentNumber string `json:"documentNumber"`
-	PhoneNumber   string `json:"phoneNumber"`
-	Address       string `json:"address"`
-	EmergencyContact struct {
-		Name        string `json:"name"`
-		PhoneNumber string `json:"phoneNumber"`
-		Relationship string `json:"relationship"`
-	} `json:"emergencyContact"`
-	MedicalHistory []string `json:"medicalHistory"`
-	Allergies      []string `json:"allergies"`
-	BloodType      string   `json:"bloodType"`
+	ID              uuid.UUID `json:"id" gorm:"type:uuid;primary_key;default:uuid_generate_v4()"`
+	Name            string    `json:"name" gorm:"not null"`
+	Gender          string    `json:"gender" gorm:"not null"`
+	Age             int       `json:"age" gorm:"not null"`
+	Insurance       string    `json:"insurance"`
+	HealthPlan      string    `json:"healthPlan"`
+	CPF             string    `json:"cpf" gorm:"unique;not null"`
+	RG              string    `json:"rg" gorm:"unique;not null"`
+	MotherName      string    `json:"motherName" gorm:"not null"`
+	FatherName      string    `json:"fatherName"`
+	MedicalRecordPDF string    `json:"medicalRecordPDF"`
+	CreatedAt       time.Time `json:"createdAt" gorm:"autoCreateTime"`
+	UpdatedAt       time.Time `json:"updatedAt" gorm:"autoUpdateTime"`
 }
 
 // ERPPatient represents the raw patient data coming from different ERP systems
