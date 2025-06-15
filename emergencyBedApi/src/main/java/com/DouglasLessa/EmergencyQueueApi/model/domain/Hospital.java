@@ -45,4 +45,8 @@ public class Hospital {
 
     @OneToMany(mappedBy = "hospital", cascade = CascadeType.ALL, orphanRemoval = true)
     private ArrayList<User> users;
+
+    @OneToMany(mappedBy = "hospital", cascade = CascadeType.ALL, orphanRemoval = true)
+    private ArrayList<QueuePatinentMedicalCare> queuePatinents;
+
 }

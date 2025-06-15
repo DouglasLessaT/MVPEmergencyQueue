@@ -23,16 +23,11 @@ type Patient struct {
 	UpdatedAt       time.Time `json:"updatedAt" gorm:"autoUpdateTime"`
 }
 
-// ERPPatient represents the raw patient data coming from different ERP systems
 type ERPPatient struct {
-	// Generic fields that can be mapped from different ERP systems
 	RawData map[string]interface{} `json:"rawData"`
-	Source  string                 `json:"source"` // Name of the ERP system
+	Source  string                 `json:"source"` 
 }
 
-// Transform converts ERPPatient to Patient based on the source ERP system
 func (ep *ERPPatient) Transform() (*Patient, error) {
-	// TODO: Implement transformation logic based on the source ERP system
-	// This will contain the mapping logic for different ERP systems
 	return &Patient{}, nil
 } 

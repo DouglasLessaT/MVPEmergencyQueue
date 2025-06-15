@@ -25,4 +25,6 @@ public class Address {
     private String zipCode;
     private String state;
     private String city;
+    private Double latitude;
+    private Double longitude
 }
