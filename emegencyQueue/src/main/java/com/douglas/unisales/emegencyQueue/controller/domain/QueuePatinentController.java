@@ -6,33 +6,33 @@ import java.util.UUID;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import com.douglas.unisales.emegencyQueue.model.domain.QueuePatinentMedicalCare;
-import com.douglas.unisales.emegencyQueue.services.domain.QueuePatinentMedicalCareService;
+import com.douglas.unisales.emegencyQueue.model.domain.QueuePatinent;
+import com.douglas.unisales.emegencyQueue.services.domain.QueuePatinentService;
 
 @RestController
 @RequestMapping("/api/queue-patinent-medical-care")
-public class QueuePatinentMedicalCareController {
+public class QueuePatinentController {
 
     @Autowired
-    private QueuePatinentMedicalCareService service;
+    private QueuePatinentService service;
 
     @GetMapping
-    public List<QueuePatinentMedicalCare> getAll() {
+    public List<QueuePatinent> getAll() {
         return service.findAll();
     }
 
     @GetMapping("/{id}")
-    public QueuePatinentMedicalCare getById(@PathVariable UUID id) {
+    public QueuePatinent getById(@PathVariable UUID id) {
         return service.findById(id);
     }
 
     @PostMapping
-    public QueuePatinentMedicalCare create(@RequestBody QueuePatinentMedicalCare queue) {
+    public QueuePatinent create(@RequestBody QueuePatinent queue) {
         return service.save(queue);
     }
 
     @PutMapping("/{id}")
-    public QueuePatinentMedicalCare update(@PathVariable UUID id, @RequestBody QueuePatinentMedicalCare queue) {
+    public QueuePatinent update(@PathVariable UUID id, @RequestBody QueuePatinent queue) {
         queue.setId(id);
         return service.save(queue);
     }

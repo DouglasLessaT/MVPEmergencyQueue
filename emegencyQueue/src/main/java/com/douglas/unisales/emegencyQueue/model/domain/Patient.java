@@ -23,4 +23,10 @@ public class Patient {
     private String motherName;
     private String fatherName;
     private String medicalRecordPDF;
+
+    @ManyToOne
+    @JoinColumn(name = "queue_id")
+    private QueuePatinent queuePatinent; // Nome corrigido para "queuePatinent"
+
+    private boolean attended = false;
 }
