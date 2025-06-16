@@ -1,6 +1,6 @@
 package com.douglas.unisales.emegencyQueue.model.domain;
 
-import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 import com.douglas.unisales.emegencyQueue.model.security.User;
@@ -38,15 +38,15 @@ public class Hospital {
     private Integer numberOfFloors;
 
     @OneToMany(mappedBy = "hospital")
-    private ArrayList<Bedroom> rooms;
+    private List<Bedroom> rooms;
 
     @OneToMany(mappedBy = "hospital")
-    private ArrayList<Ambulance> ambulances;
+    private List<Ambulance> ambulances;
 
     @OneToMany(mappedBy = "hospital", cascade = CascadeType.ALL, orphanRemoval = true)
-    private ArrayList<User> users;
+    private List<User> users;
 
     @OneToMany(mappedBy = "hospital", cascade = CascadeType.ALL, orphanRemoval = true)
-    private ArrayList<QueuePatinent> queuePatinents;
+    private List<QueuePatinent> queuePatinents;
 
 }

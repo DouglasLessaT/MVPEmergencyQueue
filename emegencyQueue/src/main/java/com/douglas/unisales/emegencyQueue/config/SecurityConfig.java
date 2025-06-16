@@ -10,15 +10,18 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
+import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.config.Customizer;
 
 import com.douglas.unisales.emegencyQueue.services.security.UserService;
 import com.douglas.unisales.emegencyQueue.util.JWTUtil;
 import com.douglas.unisales.emegencyQueue.config.handelrs.LoginInterceptor;
-import com.douglas.unisales.emegencyQueue.model.security.User;
 
 @Configuration
 @EnableWebMvc
-public class SecurityConfig implements CommandLineRunner, WebMvcConfigurer {
+@EnableWebSecurity
+public class SecurityConfig implements WebMvcConfigurer {
 
   @Autowired
   private UserService userService;
@@ -29,52 +32,6 @@ public class SecurityConfig implements CommandLineRunner, WebMvcConfigurer {
   @Bean
   public PasswordEncoder passwordEncoder() {
     return new BCryptPasswordEncoder();
-  }
-
-  private void addUsers() {
-    User u = new User();
-    try {
-      u.setLogin("admin");
-      u.setSenha(passwordEncoder().encode("1234"));
-      u.getPermissoes().add("ROLE_USER");
-      u.getPermissoes().add("ROLE_ADMIN");
-      // userRepository.save(u);
-      userService.insert(u);
-    } catch (Exception ex) {
-    }
-
-    try {
-      u = new User();
-      u.setLogin("usuario1");
-      u.setSenha(passwordEncoder().encode("1234"));
-      u.getPermissoes().add("ROLE_USER");
-      u.getPermissoes().add("ROLE_TAREFAS");
-      // userRepository.save(u);
-      userService.insert(u);
-    } catch (Exception ex) {
-    }
-
-    try {
-      u = new User();
-      u.setLogin("usuario2");
-      u.setSenha(passwordEncoder().encode("1234"));
-      u.getPermissoes().add("ROLE_USER");
-      // userRepository.save(u);
-      userService.insert(u);
-    } catch (Exception ex) {
-    }
-
-  }
-
-  /**
-   * método executado no momento da execução da aplicação
-   * 
-   * @param args
-   * @throws Exception
-   */
-  @Override
-  public void run(String... args) throws Exception {
-    addUsers();
   }
 
   @Override
@@ -93,12 +50,15 @@ public class SecurityConfig implements CommandLineRunner, WebMvcConfigurer {
         .addPathPatterns("/tarefas**", "/users**");
   }
 
-  @Override
-  protected void configure(HttpSecurity http) throws Exception {
-    http.csrf().disable();
-    http.authorizeRequests().antMatchers("/register", "/login").permitAll()
-        .antMatchers("/index").hasAnyRole("MEMBER, ADMIN")
-        .and().formLogin().loginPage("/login").permitAll()
-        .defaultSuccessUrl("/").and().logout().logoutSuccessUrl("/logout");
+  @Bean
+  public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+    http
+        .csrf(csrf -> csrf.disable())
+        .authorizeHttpRequests(auth -> auth
+            // Permitir acesso a tudo sem autenticação (apenas para desenvolvimento)
+            .anyRequest().permitAll()
+        );
+    
+    return http.build();
   }
 }
