@@ -80,7 +80,17 @@ public class SecurityConfig implements CommandLineRunner, WebMvcConfigurer {
   @Override
   public void addInterceptors(InterceptorRegistry registry) {
     registry.addInterceptor(new LoginInterceptor(userService, jwtUtil))
-        .excludePathPatterns("/error**", "/index**", "/doc**", "/auth**", "/swagger-ui**", "/v3/api-docs**")
+        .excludePathPatterns(
+            "/error**",
+            "/index**",
+            "/doc**",
+            "/auth**",
+            "/swagger-ui/**",
+            "/swagger-ui.html",
+            "/v3/api-docs/**",
+            "/swagger-resources/**",
+            "/webjars/**"
+        )
         .addPathPatterns("/tarefas**", "/users**");
   }
 }
