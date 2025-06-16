@@ -21,11 +21,7 @@ import com.douglas.unisales.emegencyQueue.util.JWTUtil;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
-/**
- *
- * @author romulo.douro
- *
- */
+
 public class LoginInterceptor implements HandlerInterceptor {
 
   private UserService userService;
