@@ -1,0 +1,14 @@
+{
+    "configurations": [
+        {
+            "type": "java",
+            "name": "Spring Boot-EmegencyQueueApplication<emegencyQueue>",
+            "request": "launch",
+            "cwd": "${workspaceFolder}",
+            "mainClass": "com.douglas.unisales.emegencyQueue.EmegencyQueueApplication",
+            "projectName": "emegencyQueue",
+            "args": "",
+            "envFile": "${workspaceFolder}/.env"
+        }
+    ]
+}
