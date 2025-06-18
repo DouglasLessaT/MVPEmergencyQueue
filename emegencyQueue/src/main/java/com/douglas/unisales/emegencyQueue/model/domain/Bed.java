@@ -38,7 +38,20 @@ public class Bed {
     @JoinColumn(name = "bedroom_id")
     private Bedroom bedroom;
 
+    @ManyToOne
+    @JoinColumn(name = "infermaria_id")
+    private Infermaria infermaria;
+
     private Date entryPacient;
     private Date exitPacient;
 
+    private boolean occupied;
+
+    public boolean isOccupied() {
+        return occupied;
+    }
+
+    public void setOccupied(boolean occupied) {
+        this.occupied = occupied;
+    }
 }

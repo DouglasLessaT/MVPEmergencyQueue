@@ -23,4 +23,5 @@ public class Status {
     private String code;
     private String color;
     private String description;
+    private String entityType;
 }

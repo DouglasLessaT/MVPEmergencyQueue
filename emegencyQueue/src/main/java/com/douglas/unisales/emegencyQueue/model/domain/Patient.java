@@ -29,4 +29,8 @@ public class Patient {
     private QueuePatinent queuePatinent; // Nome corrigido para "queuePatinent"
 
     private boolean attended = false;
+
+    @ManyToOne
+    @JoinColumn(name = "status_id")
+    private Status status;
 }

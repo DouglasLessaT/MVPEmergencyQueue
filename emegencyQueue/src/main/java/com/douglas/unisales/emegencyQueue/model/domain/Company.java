@@ -15,4 +15,8 @@ public class Company {
 
     private String name;
     private String cnpj;
+
+    @ManyToOne
+    @JoinColumn(name = "status_id")
+    private Status status;
 }

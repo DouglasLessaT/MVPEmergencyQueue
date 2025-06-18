@@ -10,6 +10,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
+import jakarta.persistence.JoinColumn;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -36,4 +37,8 @@ public class QueuePatinent {
     
     @ManyToOne
     private Hospital hospital;
+
+    @ManyToOne
+    @JoinColumn(name = "status_id")
+    private Status status;
 }

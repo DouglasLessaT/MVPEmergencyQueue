@@ -8,12 +8,17 @@ import org.springframework.stereotype.Service;
 
 import com.douglas.unisales.emegencyQueue.model.domain.Bedroom;
 import com.douglas.unisales.emegencyQueue.repository.domain.BedroomRepository;
+import com.douglas.unisales.emegencyQueue.model.domain.Bed;
+import com.douglas.unisales.emegencyQueue.services.domain.BedService;
 
 @Service
 public class BedroomService {
 
     @Autowired
     private BedroomRepository bedroomRepository;
+
+    @Autowired
+    private BedService bedService;
 
     public Bedroom save(Bedroom bedroom) {
         return bedroomRepository.save(bedroom);
@@ -42,5 +47,47 @@ public class BedroomService {
         existingBedroom.setStatus(bedroom.getStatus());
 
         bedroomRepository.save(existingBedroom);
+    }
+    
+    // Métodos de busca
+    public List<Bedroom> findByHospitalId(UUID hospitalId) {
+        return bedroomRepository.findByHospitalId(hospitalId);
+    }
+    
+    public List<Bedroom> findByStatusId(UUID statusId) {
+        return bedroomRepository.findByStatusId(statusId);
+    }
+    
+    public List<Bedroom> findByStatusEntityType(String entityType) {
+        return bedroomRepository.findByStatusEntityType(entityType);
+    }
+    
+    public Bedroom findByCodeAndHospitalId(String code, UUID hospitalId) {
+        return bedroomRepository.findByCodeAndHospitalId(code, hospitalId);
+    }
+    
+    // Método para obter estatísticas do quarto
+    public BedroomStats getBedroomStats(UUID bedroomId) {
+        List<Bed> beds = bedService.findByBedroomId(bedroomId);
+        long occupiedCount = beds.stream().filter(Bed::isOccupied).count();
+        
+        return new BedroomStats(beds.size(), (int) occupiedCount);
+    }
+    
+    public static class BedroomStats {
+        private int totalBeds;
+        private int occupiedBeds;
+        
+        public BedroomStats(int totalBeds, int occupiedBeds) {
+            this.totalBeds = totalBeds;
+            this.occupiedBeds = occupiedBeds;
+        }
+        
+        public int getTotalBeds() { return totalBeds; }
+        public int getOccupiedBeds() { return occupiedBeds; }
+        public int getAvailableBeds() { return totalBeds - occupiedBeds; }
+        public double getOccupancyRate() { 
+            return totalBeds > 0 ? (double) occupiedBeds / totalBeds * 100 : 0; 
+        }
     }
 }

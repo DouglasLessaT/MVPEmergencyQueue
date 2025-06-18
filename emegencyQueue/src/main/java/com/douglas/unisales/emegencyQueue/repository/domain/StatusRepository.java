@@ -1,5 +1,6 @@
 package  com.douglas.unisales.emegencyQueue.repository.domain;
 
+import java.util.List;
 import java.util.UUID;
 
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -16,4 +17,6 @@ public interface StatusRepository extends JpaRepository<Status, UUID> {
     Status findByName(String name);
 
     Status findByNameAndIdNot(String name, UUID id);
+
+    List<Status> findByEntityType(String entityType);
 }

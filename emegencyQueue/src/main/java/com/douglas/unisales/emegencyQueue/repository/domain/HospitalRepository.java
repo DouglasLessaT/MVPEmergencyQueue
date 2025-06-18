@@ -1,5 +1,6 @@
 package com.douglas.unisales.emegencyQueue.repository.domain;
 
+import java.util.List;
 import java.util.UUID;
 
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -12,4 +13,7 @@ public interface HospitalRepository extends JpaRepository<Hospital, UUID> {
     Hospital findByName(String name);
 
     Hospital findByNameAndIdNot(String name, UUID id);
+
+    List<Hospital> findByStatusId(UUID statusId);
+    List<Hospital> findByStatusEntityType(String entityType);
 }

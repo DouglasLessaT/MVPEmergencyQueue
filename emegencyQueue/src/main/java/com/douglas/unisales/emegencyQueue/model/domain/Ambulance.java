@@ -25,4 +25,8 @@ public class Ambulance {
     @ManyToOne
     @JoinColumn(name = "hospital_id")
     private Hospital hospital;
+
+    @ManyToOne
+    @JoinColumn(name = "status_id")
+    private Status status;
 }

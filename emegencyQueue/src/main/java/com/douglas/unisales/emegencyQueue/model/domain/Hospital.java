@@ -12,6 +12,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
+import jakarta.persistence.ManyToOne;
 import lombok.Data;
 
 @Data
@@ -48,5 +49,9 @@ public class Hospital {
 
     @OneToMany(mappedBy = "hospital", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<QueuePatinent> queuePatinents;
+
+    @ManyToOne
+    @JoinColumn(name = "status_id")
+    private Status status;
 
 }
