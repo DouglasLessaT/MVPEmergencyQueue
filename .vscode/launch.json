@@ -9,6 +9,16 @@
             "projectName": "emegencyQueue",
             "args": "",
             "envFile": "${workspaceFolder}/.env"
+        },
+        {
+            "type": "java",
+            "name": "Spring Boot-EmergencyQueueApiApplication<EmergencyQueueApi>",
+            "request": "launch",
+            "cwd": "${workspaceFolder}",
+            "mainClass": "douglas.unisales.EmergencyQueueApi.EmergencyQueueApiApplication",
+            "projectName": "EmergencyQueueApi",
+            "args": "",
+            "envFile": "${workspaceFolder}/.env"
         }
     ]
 }

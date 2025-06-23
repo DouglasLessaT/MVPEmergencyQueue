@@ -35,76 +35,121 @@ class HomePage extends StatelessWidget {
   }
 
   Widget _buildHeader(BuildContext context) {
-    return Container(
-      color: Colors.white,
-      child: SafeArea(
-        child: Container(
-          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
-          child: Row(
-            children: [
-              // Logo and Title
-              Row(
+    return Material(
+      elevation: 2,
+      child: Container(
+        color: Colors.white,
+        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+        child: SafeArea(
+          child: LayoutBuilder(
+            builder: (context, constraints) {
+              final isMobile = constraints.maxWidth < 600;
+              return Row(
                 children: [
-                  Container(
-                    padding: const EdgeInsets.all(8),
-                    decoration: BoxDecoration(
-                      color: const Color(0xFF2563EB),
-                      borderRadius: BorderRadius.circular(8),
-                    ),
-                    child: const Icon(
-                      Icons.local_hospital,
-                      color: Colors.white,
-                      size: 24,
-                    ),
-                  ),
-                  const SizedBox(width: 12),
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
+                  // Logo e título
+                  Row(
                     children: [
-                      const Text(
-                        'EmergencyQueue',
-                        style: TextStyle(
-                          fontSize: 20,
-                          fontWeight: FontWeight.bold,
-                          color: Color(0xFF111827),
+                      Tooltip(
+                        message: 'Página inicial',
+                        child: Container(
+                          padding: const EdgeInsets.all(8),
+                          decoration: BoxDecoration(
+                            color: const Color(0xFF2563EB),
+                            borderRadius: BorderRadius.circular(8),
+                          ),
+                          child: const Icon(
+                            Icons.local_hospital,
+                            color: Colors.white,
+                            size: 24,
+                          ),
                         ),
                       ),
-                      const Text(
-                        'Filas Hospitalares ES',
-                        style: TextStyle(
-                          fontSize: 12,
-                          color: Color(0xFF6B7280),
-                        ),
+                      const SizedBox(width: 12),
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          const Text(
+                            'EmergencyQueue',
+                            style: TextStyle(
+                              fontSize: 20,
+                              fontWeight: FontWeight.bold,
+                              color: Color(0xFF111827),
+                            ),
+                          ),
+                          const Text(
+                            'Filas Hospitalares ES',
+                            style: TextStyle(
+                              fontSize: 12,
+                              color: Color(0xFF6B7280),
+                            ),
+                          ),
+                        ],
                       ),
                     ],
                   ),
-                ],
-              ),
-              const Spacer(),
-              // Navigation
-              Row(
-                children: [
-                  TextButton(
-                    onPressed: () => context.go('/map'),
-                    child: const Text(
-                      'Mapa Público',
-                      style: TextStyle(color: Color(0xFF6B7280), fontSize: 14),
+                  const Spacer(),
+                  // Navegação
+                  if (!isMobile)
+                    Row(
+                      children: [
+                        TextButton(
+                          onPressed: () => context.go('/map'),
+                          style: ButtonStyle(
+                            overlayColor: MaterialStateProperty.all(
+                              Colors.blue.withOpacity(0.08),
+                            ),
+                          ),
+                          child: const Text(
+                            'Mapa Público',
+                            style: TextStyle(
+                              color: Color(0xFF2563EB),
+                              fontSize: 14,
+                              fontWeight: FontWeight.w500,
+                            ),
+                          ),
+                        ),
+                        const SizedBox(width: 12),
+                        OutlinedButton(
+                          onPressed: () => context.go('/login'),
+                          style: OutlinedButton.styleFrom(
+                            padding: const EdgeInsets.symmetric(
+                              horizontal: 20,
+                              vertical: 12,
+                            ),
+                            side: const BorderSide(color: Color(0xFF2563EB)),
+                            foregroundColor: const Color(0xFF2563EB),
+                            textStyle: const TextStyle(
+                              fontWeight: FontWeight.w600,
+                            ),
+                          ),
+                          child: const Text(
+                            'Login',
+                            style: TextStyle(fontSize: 14),
+                          ),
+                        ),
+                      ],
                     ),
-                  ),
-                  const SizedBox(width: 12),
-                  OutlinedButton(
-                    onPressed: () => context.go('/login'),
-                    style: OutlinedButton.styleFrom(
-                      padding: const EdgeInsets.symmetric(
-                        horizontal: 16,
-                        vertical: 8,
-                      ),
+                  if (isMobile)
+                    PopupMenuButton<String>(
+                      icon: const Icon(Icons.menu, color: Color(0xFF2563EB)),
+                      onSelected: (value) {
+                        if (value == 'map') context.go('/map');
+                        if (value == 'login') context.go('/login');
+                      },
+                      itemBuilder: (context) => [
+                        const PopupMenuItem(
+                          value: 'map',
+                          child: Text('Mapa Público'),
+                        ),
+                        const PopupMenuItem(
+                          value: 'login',
+                          child: Text('Login'),
+                        ),
+                      ],
                     ),
-                    child: const Text('Login', style: TextStyle(fontSize: 14)),
-                  ),
                 ],
-              ),
-            ],
+              );
+            },
           ),
         ),
       ),
