@@ -6,7 +6,6 @@ import java.util.UUID;
 import douglas.unisales.EmergencyQueueApi.model.security.User;
 
 import jakarta.persistence.CascadeType;
-import jakarta.persistence.Embedded;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
@@ -27,7 +26,7 @@ public class Hospital {
     private String phone;
     private String escalation;
 
-    @Embedded
+    @ManyToOne
     @JoinColumn(name = "address_hospital_id")
     private Address address;
 

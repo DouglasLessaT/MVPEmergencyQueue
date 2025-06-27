@@ -7,6 +7,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 import douglas.unisales.EmergencyQueueApi.model.domain.Seat;
+import douglas.unisales.EmergencyQueueApi.model.domain.Hospital;
 
 @Repository
 public interface SeatRepository extends JpaRepository<Seat, UUID> {
@@ -22,4 +23,6 @@ public interface SeatRepository extends JpaRepository<Seat, UUID> {
     Seat findByCodeAndInfermariaIdAndIdNot(String code, UUID infermariaId, UUID id);
     
     List<Seat> findByPatientId(UUID patientId);
+    
+    List<Seat> findByOccupied(boolean occupied);
 } 

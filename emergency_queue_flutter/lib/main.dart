@@ -5,7 +5,7 @@ import 'features/homePage/presentation/pages/home_page.dart';
 import 'features/login/presentation/pages/login_page.dart';
 import 'features/dashboard/presentation/pages/dashboard_page.dart';
 import 'features/admin/presentation/pages/admin_page.dart';
-import 'features/map/presentation/pages/map_page.dart';
+import 'features/map/presentation/pages/map_page_with_api.dart';
 
 void main() {
   runApp(const MyApp());
@@ -38,6 +38,6 @@ final GoRouter _router = GoRouter(
       builder: (context, state) => const DashboardPage(),
     ),
     GoRoute(path: '/admin', builder: (context, state) => const AdminPage()),
-    GoRoute(path: '/map', builder: (context, state) => const MapPage()),
+    GoRoute(path: '/map', builder: (context, state) => const MapPageWithAPI()),
   ],
 );

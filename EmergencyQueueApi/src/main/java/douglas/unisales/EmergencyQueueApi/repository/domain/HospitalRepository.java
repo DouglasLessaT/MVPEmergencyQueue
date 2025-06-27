@@ -7,6 +7,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 import douglas.unisales.EmergencyQueueApi.model.domain.Hospital;
+import douglas.unisales.EmergencyQueueApi.model.domain.Status;
 
 @Repository
 public interface HospitalRepository extends JpaRepository<Hospital, UUID> {
@@ -16,4 +17,5 @@ public interface HospitalRepository extends JpaRepository<Hospital, UUID> {
 
     List<Hospital> findByStatusId(UUID statusId);
     List<Hospital> findByStatusEntityType(String entityType);
+    List<Hospital> findByStatus(Status status);
 }

@@ -7,29 +7,24 @@ class HomePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final isMobile = MediaQuery.of(context).size.width < 600;
     return Scaffold(
       body: SingleChildScrollView(
-        child: Column(
-          children: [
-            // Header
-            _buildHeader(context),
+          child: Column(
+            children: [
+              _buildHeader(context),
 
-            // Hero Section
-            _buildHeroSection(context),
+              _buildHeroSection(context, isMobile),
 
-            // Features Section
-            _buildFeaturesSection(context),
+              _buildFeaturesSection(context, isMobile),
 
-            // Stats Section
-            _buildStatsSection(context),
+              // _buildStatsSection(context, isMobile),
 
-            // CTA Section
-            _buildCTASection(context),
+              _buildCTASection(context, isMobile),
 
-            // Footer
-            _buildFooter(context),
-          ],
-        ),
+              _buildFooter(context),
+            ],
+          ),
       ),
     );
   }
@@ -39,7 +34,7 @@ class HomePage extends StatelessWidget {
       elevation: 2,
       child: Container(
         color: Colors.white,
-        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+        padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 7),
         child: SafeArea(
           child: LayoutBuilder(
             builder: (context, constraints) {
@@ -156,146 +151,184 @@ class HomePage extends StatelessWidget {
     );
   }
 
-  Widget _buildHeroSection(BuildContext context) {
+  Widget _buildHeroSection(BuildContext context, bool isMobile) {
     return Container(
-      padding: const EdgeInsets.all(16),
+      padding: EdgeInsets.all(isMobile ? 8 : 16),
       child: Column(
         children: [
-          const SizedBox(height: 40),
-          Row(
-            children: [
-              Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
+          SizedBox(height: isMobile ? 24 : 40),
+          isMobile
+              ? Column(
                   children: [
-                    const Text(
-                      'Transparência as\nFilas Hospitalares\ndo Espírito Santo',
-                      style: TextStyle(
-                        fontSize: 32,
-                        fontWeight: FontWeight.bold,
-                        color: Color(0xFF111827),
-                        height: 1.2,
-                      ),
-                    ),
-                    const SizedBox(height: 16),
-                    const Text(
-                      'Sistema integrado para acompanhamento em tempo real das filas de emergência '
-                      'dos hospitais de Vila Velha, proporcionando transparência e melhor experiência '
-                      'para pacientes e familiares.',
-                      style: TextStyle(
-                        fontSize: 16,
-                        color: Color(0xFF6B7280),
-                        height: 1.5,
-                      ),
-                    ),
+                    _buildHeroText(context, isMobile),
                     const SizedBox(height: 24),
-                    Row(
-                      children: [
-                        Expanded(
-                          child: ElevatedButton.icon(
-                            onPressed: () => context.go('/map'),
-                            icon: const Icon(Icons.map, size: 20),
-                            label: const Text('Ver Mapa Público'),
-                            style: ElevatedButton.styleFrom(
-                              backgroundColor: const Color(0xFF2563EB),
-                              foregroundColor: Colors.white,
-                              padding: const EdgeInsets.symmetric(vertical: 16),
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(8),
-                              ),
-                            ),
-                          ),
-                        ),
-                        const SizedBox(width: 12),
-                        Expanded(
-                          child: OutlinedButton.icon(
-                            onPressed: () => context.go('/login'),
-                            icon: const Icon(Icons.shield, size: 20),
-                            label: const Text('Acesso Hospitalar'),
-                            style: OutlinedButton.styleFrom(
-                              padding: const EdgeInsets.symmetric(vertical: 16),
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(8),
-                              ),
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
+                    _buildHeroStatusCard(isMobile),
                   ],
-                ),
-              ),
-              const SizedBox(width: 24),
-              // Status Card
-              Container(
-                width: 200,
-                padding: const EdgeInsets.all(16),
-                decoration: BoxDecoration(
-                  gradient: const LinearGradient(
-                    colors: [Color(0xFF3B82F6), Color(0xFF10B981)],
-                  ),
-                  borderRadius: BorderRadius.circular(16),
-                  boxShadow: [
-                    BoxShadow(
-                      color: Colors.black.withOpacity(0.1),
-                      blurRadius: 10,
-                      offset: const Offset(0, 4),
-                    ),
-                  ],
-                ),
-                child: Column(
+                )
+              : Row(
                   children: [
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        const Icon(
-                          Icons.local_hospital,
-                          color: Colors.white,
-                          size: 32,
-                        ),
-                        Container(
-                          padding: const EdgeInsets.symmetric(
-                            horizontal: 8,
-                            vertical: 4,
-                          ),
-                          decoration: BoxDecoration(
-                            color: Colors.white.withOpacity(0.2),
-                            borderRadius: BorderRadius.circular(12),
-                          ),
-                          child: const Text(
-                            'Em Tempo Real',
-                            style: TextStyle(
-                              color: Colors.white,
-                              fontSize: 12,
-                              fontWeight: FontWeight.w500,
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                    const SizedBox(height: 16),
-                    _buildHospitalStatus(
-                      'Hospital Santa Casa',
-                      'Moderada',
-                      Colors.orange,
-                    ),
-                    const SizedBox(height: 8),
-                    _buildHospitalStatus(
-                      'Hospital Evangélico',
-                      'Baixa',
-                      Colors.green,
-                    ),
-                    const SizedBox(height: 8),
-                    _buildHospitalStatus(
-                      'Hospital Meridional',
-                      'Alta',
-                      Colors.red,
-                    ),
+                    Expanded(child: _buildHeroText(context, isMobile)),
+                    const SizedBox(width: 24),
+                    _buildHeroStatusCard(isMobile),
                   ],
+                ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildHeroText(BuildContext context, bool isMobile) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          'Transparência as\nFilas Hospitalares\ndo Espírito Santo',
+          style: TextStyle(
+            fontSize: isMobile ? 22 : 32,
+            fontWeight: FontWeight.bold,
+            color: const Color(0xFF111827),
+            height: 1.2,
+          ),
+        ),
+        SizedBox(height: isMobile ? 8 : 16),
+        Text(
+          'Sistema integrado para acompanhamento em tempo real das filas de emergência '
+          'dos hospitais de Vila Velha, proporcionando transparência e melhor experiência '
+          'para pacientes e familiares.',
+          style: TextStyle(
+            fontSize: isMobile ? 14 : 16,
+            color: const Color(0xFF6B7280),
+            height: 1.5,
+          ),
+        ),
+        SizedBox(height: isMobile ? 16 : 24),
+        isMobile
+            ? Column(
+                children: [
+                  SizedBox(
+                    width: double.infinity,
+                    child: ElevatedButton.icon(
+                      onPressed: () => context.go('/map'),
+                      icon: const Icon(Icons.map, size: 20),
+                      label: const Text('Ver Mapa Público'),
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: const Color(0xFF2563EB),
+                        foregroundColor: Colors.white,
+                        padding: const EdgeInsets.symmetric(vertical: 16),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(8),
+                        ),
+                      ),
+                    ),
+                  ),
+                  const SizedBox(height: 12),
+                  SizedBox(
+                    width: double.infinity,
+                    child: OutlinedButton.icon(
+                      onPressed: () => context.go('/login'),
+                      icon: const Icon(Icons.shield, size: 20),
+                      label: const Text('Acesso Hospitalar'),
+                      style: OutlinedButton.styleFrom(
+                        padding: const EdgeInsets.symmetric(vertical: 16),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(8),
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
+              )
+            : Row(
+                children: [
+                  Expanded(
+                    child: ElevatedButton.icon(
+                      onPressed: () => context.go('/map'),
+                      icon: const Icon(Icons.map, size: 20),
+                      label: const Text('Ver Mapa Público'),
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: const Color(0xFF2563EB),
+                        foregroundColor: Colors.white,
+                        padding: const EdgeInsets.symmetric(vertical: 16),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(8),
+                        ),
+                      ),
+                    ),
+                  ),
+                  const SizedBox(width: 12),
+                  Expanded(
+                    child: OutlinedButton.icon(
+                      onPressed: () => context.go('/login'),
+                      icon: const Icon(Icons.shield, size: 20),
+                      label: const Text('Acesso Hospitalar'),
+                      style: OutlinedButton.styleFrom(
+                        padding: const EdgeInsets.symmetric(vertical: 16),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(8),
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+      ],
+    );
+  }
+
+  Widget _buildHeroStatusCard(bool isMobile) {
+    return Container(
+      width: isMobile ? double.infinity : 200,
+      margin: isMobile ? const EdgeInsets.only(top: 16) : null,
+      padding: const EdgeInsets.all(16),
+      decoration: BoxDecoration(
+        gradient: const LinearGradient(
+          colors: [Color(0xFF3B82F6), Color(0xFF10B981)],
+        ),
+        borderRadius: BorderRadius.circular(16),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withOpacity(0.1),
+            blurRadius: 10,
+            offset: const Offset(0, 4),
+          ),
+        ],
+      ),
+      child: Column(
+        children: [
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              const Icon(
+                Icons.local_hospital,
+                color: Colors.white,
+                size: 32,
+              ),
+              Container(
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 8,
+                  vertical: 4,
+                ),
+                decoration: BoxDecoration(
+                  color: Colors.white.withOpacity(0.2),
+                  borderRadius: BorderRadius.circular(12),
+                ),
+                child: const Text(
+                  'Em Tempo Real',
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 12,
+                    fontWeight: FontWeight.w500,
+                  ),
                 ),
               ),
             ],
           ),
+          const SizedBox(height: 16),
+          _buildHospitalStatus('Hospital Santa Casa', 'Moderada', Colors.orange),
+          const SizedBox(height: 8),
+          _buildHospitalStatus('Hospital Evangélico', 'Baixa', Colors.green),
+          const SizedBox(height: 8),
+          _buildHospitalStatus('Hospital Meridional', 'Alta', Colors.red),
         ],
       ),
     );
@@ -330,7 +363,7 @@ class HomePage extends StatelessWidget {
     );
   }
 
-  Widget _buildFeaturesSection(BuildContext context) {
+  Widget _buildFeaturesSection(BuildContext context, bool isMobile) {
     final features = [
       {
         'icon': Icons.map,
@@ -360,10 +393,10 @@ class HomePage extends StatelessWidget {
 
     return Container(
       color: Colors.white,
-      padding: const EdgeInsets.all(16),
+      padding: EdgeInsets.all(isMobile ? 8 : 16),
       child: Column(
         children: [
-          const SizedBox(height: 40),
+          SizedBox(height: isMobile ? 24 : 40),
           const Text(
             'Funcionalidades Principais',
             style: TextStyle(
@@ -380,15 +413,15 @@ class HomePage extends StatelessWidget {
             style: TextStyle(fontSize: 16, color: Color(0xFF6B7280)),
             textAlign: TextAlign.center,
           ),
-          const SizedBox(height: 32),
+          SizedBox(height: isMobile ? 16 : 32),
           GridView.builder(
             shrinkWrap: true,
             physics: const NeverScrollableScrollPhysics(),
-            gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-              crossAxisCount: 2,
+            gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+              crossAxisCount: isMobile ? 1 : 2,
               crossAxisSpacing: 16,
               mainAxisSpacing: 16,
-              childAspectRatio: 0.8,
+              childAspectRatio: isMobile ? 1.5 : 0.8,
             ),
             itemCount: features.length,
             itemBuilder: (context, index) {
@@ -445,62 +478,64 @@ class HomePage extends StatelessWidget {
     );
   }
 
-  Widget _buildStatsSection(BuildContext context) {
+  Widget _buildStatsSection(BuildContext context, bool isMobile) {
     return Container(
       decoration: const BoxDecoration(
         gradient: LinearGradient(
           colors: [Color(0xFF2563EB), Color(0xFF10B981)],
         ),
       ),
-      padding: const EdgeInsets.all(16),
+      padding: EdgeInsets.all(isMobile ? 8 : 16),
       child: Column(
         children: [
-          const SizedBox(height: 40),
-          Row(
-            children: [
-              Expanded(
-                child: _buildStatItem(
-                  Icons.local_hospital,
-                  '15+',
-                  'Hospitais Conectados',
+          SizedBox(height: isMobile ? 24 : 40),
+          isMobile
+              ? Column(
+                  children: [
+                    _buildStatItem(Icons.local_hospital, '15+', 'Hospitais Conectados', isMobile),
+                    const SizedBox(height: 16),
+                    _buildStatItem(Icons.people, '50k+', 'Consultas Mensais', isMobile),
+                    const SizedBox(height: 16),
+                    _buildStatItem(Icons.favorite, '24/7', 'Monitoramento', isMobile),
+                  ],
+                )
+              : Row(
+                  children: [
+                    Expanded(
+                      child: _buildStatItem(Icons.local_hospital, '15+', 'Hospitais Conectados', isMobile),
+                    ),
+                    Expanded(
+                      child: _buildStatItem(Icons.people, '50k+', 'Consultas Mensais', isMobile),
+                    ),
+                    Expanded(
+                      child: _buildStatItem(Icons.favorite, '24/7', 'Monitoramento', isMobile),
+                    ),
+                  ],
                 ),
-              ),
-              Expanded(
-                child: _buildStatItem(
-                  Icons.people,
-                  '50k+',
-                  'Consultas Mensais',
-                ),
-              ),
-              Expanded(
-                child: _buildStatItem(Icons.favorite, '24/7', 'Monitoramento'),
-              ),
-            ],
-          ),
-          const SizedBox(height: 40),
+          SizedBox(height: isMobile ? 24 : 40),
         ],
       ),
     );
   }
 
-  Widget _buildStatItem(IconData icon, String value, String label) {
+  Widget _buildStatItem(IconData icon, String value, String label, bool isMobile) {
     return Column(
       children: [
-        Icon(icon, color: Colors.white, size: 48),
-        const SizedBox(height: 16),
+        Icon(icon, color: Colors.white, size: isMobile ? 36 : 48),
+        SizedBox(height: isMobile ? 8 : 16),
         Text(
           value,
-          style: const TextStyle(
-            fontSize: 32,
+          style: TextStyle(
+            fontSize: isMobile ? 22 : 32,
             fontWeight: FontWeight.bold,
             color: Colors.white,
           ),
         ),
-        const SizedBox(height: 8),
+        SizedBox(height: isMobile ? 4 : 8),
         Text(
           label,
-          style: const TextStyle(
-            fontSize: 16,
+          style: TextStyle(
+            fontSize: isMobile ? 13 : 16,
             color: Colors.white,
             fontWeight: FontWeight.w500,
           ),
@@ -510,13 +545,13 @@ class HomePage extends StatelessWidget {
     );
   }
 
-  Widget _buildCTASection(BuildContext context) {
+  Widget _buildCTASection(BuildContext context, bool isMobile) {
     return Container(
       color: const Color(0xFFF9FAFB),
-      padding: const EdgeInsets.all(16),
+      padding: EdgeInsets.all(isMobile ? 8 : 16),
       child: Column(
         children: [
-          const SizedBox(height: 40),
+          SizedBox(height: isMobile ? 24 : 40),
           const Text(
             'Pronto para Começar?',
             style: TextStyle(
@@ -533,41 +568,77 @@ class HomePage extends StatelessWidget {
             style: TextStyle(fontSize: 16, color: Color(0xFF6B7280)),
             textAlign: TextAlign.center,
           ),
-          const SizedBox(height: 24),
-          Row(
-            children: [
-              Expanded(
-                child: ElevatedButton.icon(
-                  onPressed: () => context.go('/map'),
-                  icon: const Icon(Icons.map, size: 20),
-                  label: const Text('Acessar Mapa Público'),
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: const Color(0xFF2563EB),
-                    foregroundColor: Colors.white,
-                    padding: const EdgeInsets.symmetric(vertical: 16),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(8),
+          SizedBox(height: isMobile ? 16 : 24),
+          isMobile
+              ? Column(
+                  children: [
+                    SizedBox(
+                      width: double.infinity,
+                      child: ElevatedButton.icon(
+                        onPressed: () => context.go('/map'),
+                        icon: const Icon(Icons.map, size: 20),
+                        label: const Text('Acessar Mapa Público'),
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: const Color(0xFF2563EB),
+                          foregroundColor: Colors.white,
+                          padding: const EdgeInsets.symmetric(vertical: 16),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(8),
+                          ),
+                        ),
+                      ),
                     ),
-                  ),
-                ),
-              ),
-              const SizedBox(width: 12),
-              Expanded(
-                child: OutlinedButton.icon(
-                  onPressed: () => context.go('/login'),
-                  icon: const Icon(Icons.shield, size: 20),
-                  label: const Text('Login Hospitalar'),
-                  style: OutlinedButton.styleFrom(
-                    padding: const EdgeInsets.symmetric(vertical: 16),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(8),
+                    const SizedBox(height: 12),
+                    SizedBox(
+                      width: double.infinity,
+                      child: OutlinedButton.icon(
+                        onPressed: () => context.go('/login'),
+                        icon: const Icon(Icons.shield, size: 20),
+                        label: const Text('Login Hospitalar'),
+                        style: OutlinedButton.styleFrom(
+                          padding: const EdgeInsets.symmetric(vertical: 16),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(8),
+                          ),
+                        ),
+                      ),
                     ),
-                  ),
+                  ],
+                )
+              : Row(
+                  children: [
+                    Expanded(
+                      child: ElevatedButton.icon(
+                        onPressed: () => context.go('/map'),
+                        icon: const Icon(Icons.map, size: 20),
+                        label: const Text('Acessar Mapa Público'),
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: const Color(0xFF2563EB),
+                          foregroundColor: Colors.white,
+                          padding: const EdgeInsets.symmetric(vertical: 16),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(8),
+                          ),
+                        ),
+                      ),
+                    ),
+                    const SizedBox(width: 12),
+                    Expanded(
+                      child: OutlinedButton.icon(
+                        onPressed: () => context.go('/login'),
+                        icon: const Icon(Icons.shield, size: 20),
+                        label: const Text('Login Hospitalar'),
+                        style: OutlinedButton.styleFrom(
+                          padding: const EdgeInsets.symmetric(vertical: 16),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(8),
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
                 ),
-              ),
-            ],
-          ),
-          const SizedBox(height: 40),
+          SizedBox(height: isMobile ? 24 : 40),
         ],
       ),
     );
