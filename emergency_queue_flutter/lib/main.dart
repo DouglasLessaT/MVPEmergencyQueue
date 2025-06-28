@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'core/theme/app_theme.dart';
 import 'features/homePage/presentation/pages/home_page.dart';
-import 'features/login/presentation/pages/login_page.dart';
-import 'features/dashboard/presentation/pages/dashboard_page.dart';
-import 'features/admin/presentation/pages/admin_page.dart';
+import 'features/login/presentation/pages/login_page_with_api.dart';
+import 'features/dashboard/presentation/pages/dashboard_page_demo.dart';
+import 'features/admin/presentation/pages/admin_page_demo.dart';
 import 'features/map/presentation/pages/map_page_with_api.dart';
 
 void main() {

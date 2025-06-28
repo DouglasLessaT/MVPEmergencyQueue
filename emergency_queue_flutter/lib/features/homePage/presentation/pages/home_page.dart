@@ -18,8 +18,6 @@ class HomePage extends StatelessWidget {
 
               _buildFeaturesSection(context, isMobile),
 
-              // _buildStatsSection(context, isMobile),
-
               _buildCTASection(context, isMobile),
 
               _buildFooter(context),
@@ -478,45 +476,7 @@ class HomePage extends StatelessWidget {
     );
   }
 
-  Widget _buildStatsSection(BuildContext context, bool isMobile) {
-    return Container(
-      decoration: const BoxDecoration(
-        gradient: LinearGradient(
-          colors: [Color(0xFF2563EB), Color(0xFF10B981)],
-        ),
-      ),
-      padding: EdgeInsets.all(isMobile ? 8 : 16),
-      child: Column(
-        children: [
-          SizedBox(height: isMobile ? 24 : 40),
-          isMobile
-              ? Column(
-                  children: [
-                    _buildStatItem(Icons.local_hospital, '15+', 'Hospitais Conectados', isMobile),
-                    const SizedBox(height: 16),
-                    _buildStatItem(Icons.people, '50k+', 'Consultas Mensais', isMobile),
-                    const SizedBox(height: 16),
-                    _buildStatItem(Icons.favorite, '24/7', 'Monitoramento', isMobile),
-                  ],
-                )
-              : Row(
-                  children: [
-                    Expanded(
-                      child: _buildStatItem(Icons.local_hospital, '15+', 'Hospitais Conectados', isMobile),
-                    ),
-                    Expanded(
-                      child: _buildStatItem(Icons.people, '50k+', 'Consultas Mensais', isMobile),
-                    ),
-                    Expanded(
-                      child: _buildStatItem(Icons.favorite, '24/7', 'Monitoramento', isMobile),
-                    ),
-                  ],
-                ),
-          SizedBox(height: isMobile ? 24 : 40),
-        ],
-      ),
-    );
-  }
+
 
   Widget _buildStatItem(IconData icon, String value, String label, bool isMobile) {
     return Column(
