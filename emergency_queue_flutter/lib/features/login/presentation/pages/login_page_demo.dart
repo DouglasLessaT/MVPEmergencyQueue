@@ -62,36 +62,28 @@ class _LoginPageState extends State<LoginPage>
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Container(
-        decoration: const BoxDecoration(
-          gradient: LinearGradient(
-            begin: Alignment.topLeft,
-            end: Alignment.bottomRight,
-            colors: [Color(0xFFEFF6FF), Colors.white],
-          ),
-        ),
-        child: SafeArea(
+      body: SafeArea(
+        child: SingleChildScrollView(
+          padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 24),
           child: Center(
-            child: SingleChildScrollView(
-              padding: const EdgeInsets.all(16),
-              child: ConstrainedBox(
-                constraints: const BoxConstraints(maxWidth: 400),
-                child: Column(
-                  children: [
-                    // Header
-                    _buildHeader(),
+            child: ConstrainedBox(
+              constraints: const BoxConstraints(maxWidth: 400),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  // Header
+                  _buildHeader(),
 
-                    const SizedBox(height: 32),
+                  const SizedBox(height: 32),
 
-                    // Tabs
-                    _buildTabs(),
+                  // Tabs
+                  _buildTabs(),
 
-                    const SizedBox(height: 24),
+                  const SizedBox(height: 24),
 
-                    // Demo Info
-                    _buildDemoInfo(),
-                  ],
-                ),
+                  // Demo Info
+                  _buildDemoInfo(),
+                ],
               ),
             ),
           ),
@@ -103,7 +95,6 @@ class _LoginPageState extends State<LoginPage>
   Widget _buildHeader() {
     return Column(
       children: [
-        // Back Button
         Align(
           alignment: Alignment.centerLeft,
           child: TextButton.icon(
@@ -118,7 +109,6 @@ class _LoginPageState extends State<LoginPage>
 
         const SizedBox(height: 16),
 
-        // Logo and Title
         Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [

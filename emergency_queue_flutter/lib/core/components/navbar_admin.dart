@@ -137,14 +137,13 @@ class _NavbarState extends State<Navbar> {
 
   List<Widget> _buildNavLinks() {
     final navItems = [
-      {'title': 'Dashboard', 'route': '/dashboard', 'icon': Icons.dashboard},
+      {'title': 'DashboardAdmin', 'route': '/admin', 'icon': Icons.dashboard},
       {
         'title': 'Transferências',
         'route': '/transfers',
         'icon': Icons.swap_horiz,
       },
-      {'title': 'Relatórios', 'route': '/reports', 'icon': Icons.analytics},
-      // {'title': 'Configurações', 'route': '/settings', 'icon': Icons.settings},
+      {'title': 'Configurações', 'route': '/settings', 'icon': Icons.settings},
       {'title': 'Sair', 'route': '/logout', 'icon': Icons.logout},
     ];
 

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../../../../core/components/navbar.dart';
+import '../../../../core/components/navbar_admin.dart';
 
 class AdminPage extends StatelessWidget {
   const AdminPage({super.key});
@@ -11,7 +11,6 @@ class AdminPage extends StatelessWidget {
         children: [
           // Navbar
           const Navbar(currentRoute: '/admin'),
-
           // Admin Content
           Expanded(
             child: SingleChildScrollView(
