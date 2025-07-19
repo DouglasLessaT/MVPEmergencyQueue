@@ -71,7 +71,7 @@ public class IntegradorGolangService {
 
     private boolean checkGoApiStatus(String port) {
         try {
-            URL url = new URL("http://localhost:" + port + "/health");
+            URL url = new URL("http://:" + port + "/health");
             HttpURLConnection connection = (HttpURLConnection) url.openConnection();
             connection.setRequestMethod("GET");
             connection.setConnectTimeout(5000);

@@ -9,13 +9,7 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
 
-@Data
-@NoArgsConstructor
-@AllArgsConstructor
 @Entity
 @Table(name = "bedroom")
 public class Bedroom {
@@ -37,4 +31,75 @@ public class Bedroom {
     @ManyToOne
     @JoinColumn(name = "status_id")
     private Status status;
+
+    public Bedroom() {
+    }
+
+    public Bedroom(UUID id, String code, String floor, String type, Hospital hospital, ArrayList<Bed> beds, Status status) {
+        this.id = id;
+        this.code = code;
+        this.floor = floor;
+        this.type = type;
+        this.hospital = hospital;
+        this.beds = beds;
+        this.status = status;
+    }
+
+    public UUID getId() {
+        return id;
+    }
+
+    public void setId(UUID id) {
+        this.id = id;
+    }
+
+    public String getCode() {
+        return code;
+    }
+
+    public void setCode(String code) {
+        this.code = code;
+    }
+
+    public String getFloor() {
+        return floor;
+    }
+
+    public void setFloor(String floor) {
+        this.floor = floor;
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
+    }
+
+    public Hospital getHospital() {
+        return hospital;
+    }
+
+    public void setHospital(Hospital hospital) {
+        this.hospital = hospital;
+    }
+
+    public ArrayList<Bed> getBeds() {
+        return beds;
+    }
+
+    public void setBeds(ArrayList<Bed> beds) {
+        this.beds = beds;
+    }
+
+    public Status getStatus() {
+        return status;
+    }
+
+    public void setStatus(Status status) {
+        this.status = status;
+    }
+
+    
 }

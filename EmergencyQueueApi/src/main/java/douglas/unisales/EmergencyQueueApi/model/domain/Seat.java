@@ -7,13 +7,8 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
 
-@Data
-@NoArgsConstructor
-@AllArgsConstructor
+
 @Entity
 @Table(name = "seat")
 public class Seat {
@@ -44,4 +39,66 @@ public class Seat {
     public Patient getPatient() {
         return patient;
     }
+
+    public Seat(){
+    }
+    public Seat(UUID id, String code, String description, boolean occupied, Infermaria infermaria, Patient patient, Status status) {
+        this.id = id;
+        this.code = code;
+        this.description = description;
+        this.occupied = occupied;
+        this.infermaria = infermaria;
+        this.patient = patient;
+        this.status = status;
+    }
+
+    public UUID getId() {
+        return id;
+    }
+
+    public void setId(UUID id) {
+        this.id = id;
+    }
+
+    public String getCode() {
+        return code;
+    }
+
+    public void setCode(String code) {
+        this.code = code;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public boolean isOccupied() {
+        return occupied;
+    }
+
+    public void setOccupied(boolean occupied) {
+        this.occupied = occupied;
+    }
+
+    public Infermaria getInfermaria() {
+        return infermaria;
+    }
+
+    public void setInfermaria(Infermaria infermaria) {
+        this.infermaria = infermaria;
+    }
+
+    public Status getStatus() {
+        return status;
+    }
+
+    public void setStatus(Status status) {
+        this.status = status;
+    }
+
+    
 } 

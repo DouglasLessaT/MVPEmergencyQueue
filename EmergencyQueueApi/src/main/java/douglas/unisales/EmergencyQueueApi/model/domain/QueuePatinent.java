@@ -11,13 +11,8 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import jakarta.persistence.JoinColumn;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
 
-@Data
-@NoArgsConstructor
-@AllArgsConstructor
+
 @Entity
 @Table(name = "Queue_patinent")
 public class QueuePatinent {
@@ -41,4 +36,75 @@ public class QueuePatinent {
     @ManyToOne
     @JoinColumn(name = "status_id")
     private Status status;
+
+    public QueuePatinent() {
+    }
+    public QueuePatinent(UUID id, String nameQueue, String description, Double currentQueueSize,
+            Double averageWaitTime, Date lastUpdate, List<Patient> patients, Hospital hospital, Status status) {
+        this.id = id;
+        this.nameQueue = nameQueue;
+        this.description = description;
+        this.currentQueueSize = currentQueueSize;
+        this.averageWaitTime = averageWaitTime;
+        this.lastUpdate = lastUpdate;
+        this.patients = patients;
+        this.hospital = hospital;
+        this.status = status;
+    }
+    public UUID getId() {
+        return id;
+    }
+    public void setId(UUID id) {
+        this.id = id;
+    }
+    public String getNameQueue() {
+        return nameQueue;
+    }
+    public void setNameQueue(String nameQueue) {
+        this.nameQueue = nameQueue;
+    }
+    public String getDescription() {
+        return description;
+    }
+    public void setDescription(String description) {
+        this.description = description;
+    }
+    public Double getCurrentQueueSize() {
+        return currentQueueSize;
+    }
+    public void setCurrentQueueSize(Double currentQueueSize) {
+        this.currentQueueSize = currentQueueSize;
+    }
+    public Double getAverageWaitTime() {
+        return averageWaitTime;
+    }
+    public void setAverageWaitTime(Double averageWaitTime) {
+        this.averageWaitTime = averageWaitTime;
+    }
+    public Date getLastUpdate() {
+        return lastUpdate;
+    }
+    public void setLastUpdate(Date lastUpdate) {
+        this.lastUpdate = lastUpdate;
+    }
+    public List<Patient> getPatients() {
+        return patients;
+    }
+    public void setPatients(List<Patient> patients) {
+        this.patients = patients;
+    }
+    public Hospital getHospital() {
+        return hospital;
+    }
+    public void setHospital(Hospital hospital) {
+        this.hospital = hospital;
+    }
+    public Status getStatus() {
+        return status;
+    }
+    public void setStatus(Status status) {
+        this.status = status;
+    }
+
+    
 }
